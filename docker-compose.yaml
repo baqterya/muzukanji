@@ -5,12 +5,24 @@ services:
     ports:
       - '5050:5432'
     volumes:
-      - 'kanji-data:/home/muzukanji-app'
+      - 'kanji-data:/var/lib/muzukanji-db'
     environment:
       - 'POSTGRES_DB=muzukanji'
       - 'POSTGRES_PASSWORD=password'
       - 'POSTGRES_USER=postgres'
+      - 'ENCODING=UTF8'
       - 'LANG=ja_JP.UTF-8'
+  pgadmin:
+    image: 'dpage/pgadmin4'
+    ports:
+      - '5151:80'
+    environment:
+      - 'PGADMIN_DEFAULT_EMAIL=admin@muzukanji.com'
+      - 'PGADMIN_DEFAULT_PASSWORD=postgres'
+    volumes:
+      - 'kanji-data:/var/lib/pgadmin'
+    depends_on:
+      - 'postgres'
 volumes:
   kanji-data:
     driver: 'local'
