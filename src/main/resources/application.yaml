@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgres://localhost:5050/muzukanji
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+    sql-script-encoding: UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database_platform: org.hibernate.dialect.PostgreSQLDialect
+
