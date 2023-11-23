@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  postgres:
+    image: 'postgres:alpine'
+    ports:
+      - '5050:5432'
+    volumes:
+      - 'kanji-data:/home/muzukanji-app'
+    environment:
+      - 'POSTGRES_DB=muzukanji'
+      - 'POSTGRES_PASSWORD=password'
+      - 'POSTGRES_USER=postgres'
+      - 'LANG=ja_JP.UTF-8'
+volumes:
+  kanji-data:
+    driver: 'local'
