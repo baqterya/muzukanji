@@ -67,6 +67,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-utils-hibernate-62</artifactId>
+			<version>3.6.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
