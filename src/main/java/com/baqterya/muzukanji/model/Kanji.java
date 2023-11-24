@@ -22,30 +22,36 @@ public class Kanji {
     @Id
     @SequenceGenerator(
             name = "kanji_sequence",
-            sequenceName = "student_sequence",
+            sequenceName = "kanji_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "student_sequence"
+            generator = "kanji_sequence"
     )
     private Integer id;
     private String kanji;
     @Type(ListArrayType.class)
+    @Column(columnDefinition = "text[]")
     private List<String> meanings;
     @Type(ListArrayType.class)
+    @Column(columnDefinition = "text[]")
     private List<String> kunyomi;
     @Type(ListArrayType.class)
-    private List<String> onyomi;
-    @Type(ListArrayType.class)
+    @Column(columnDefinition = "text[]")
     private List<String> kunyomi_romaji;
     @Type(ListArrayType.class)
+    @Column(columnDefinition = "text[]")
+    private List<String> onyomi;
+    @Type(ListArrayType.class)
+    @Column(columnDefinition = "text[]")
     private List<String> onyomi_romaji;
     private Integer strokes;
     private String jlptLevel;
     private Integer jyoyoGradeTaught;
     private Integer mostUsedInNewspapers;
     @Type(ListArrayType.class)
+    @Column(columnDefinition = "text[]")
     private List<String> radicals;
 
 }
