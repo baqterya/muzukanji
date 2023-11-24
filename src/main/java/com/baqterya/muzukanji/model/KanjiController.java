@@ -14,10 +14,9 @@ public class KanjiController {
 
     private final KanjiService kanjiService;
 
-
-
     @GetMapping
     public List<Kanji> getAllKanji() {
         return kanjiService.getAllKanji();
     }
+
 }
