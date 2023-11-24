@@ -31,18 +31,22 @@ public class Kanji {
     )
     private Integer id;
     private String kanji;
+    private String romaji;
     @Type(ListArrayType.class)
     private List<String> meanings;
     @Type(ListArrayType.class)
     private List<String> kunyomi;
     @Type(ListArrayType.class)
     private List<String> onyomi;
+    @Type(ListArrayType.class)
+    private List<String> kunyomi_romaji;
+    @Type(ListArrayType.class)
+    private List<String> onyomi_romaji;
     private Integer strokes;
     private String jlptLevel;
     private Integer jyoyoGradeTaught;
     private Integer mostUsedInNewspapers;
     @Type(ListArrayType.class)
-    private List<String> parts;
-    private String radical;
+    private List<String> radicals;
 
 }
