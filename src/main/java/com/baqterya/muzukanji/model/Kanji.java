@@ -31,7 +31,6 @@ public class Kanji {
     )
     private Integer id;
     private String kanji;
-    private String romaji;
     @Type(ListArrayType.class)
     private List<String> meanings;
     @Type(ListArrayType.class)
