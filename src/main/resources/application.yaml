@@ -14,4 +14,8 @@ spring:
         format_sql: true
     database: postgresql
     database_platform: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 5555
+  error:
+    include-message: always
 
