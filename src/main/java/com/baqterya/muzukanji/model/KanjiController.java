@@ -1,6 +1,7 @@
 package com.baqterya.muzukanji.model;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,9 @@ public class KanjiController {
 
     private final KanjiService kanjiService;
 
+
+
+    @GetMapping
     public List<Kanji> getAllKanji() {
         return kanjiService.getAllKanji();
     }
