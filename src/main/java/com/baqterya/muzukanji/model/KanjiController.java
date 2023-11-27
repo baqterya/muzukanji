@@ -15,7 +15,7 @@ public class KanjiController {
 
     private final KanjiService kanjiService;
 
-    @GetMapping("/list")
+    @GetMapping()
     @PreAuthorize("permitAll")
     public List<Kanji> getAllKanji() {
         return kanjiService.getAllKanji();
