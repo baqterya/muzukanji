@@ -1,4 +1,4 @@
-package com.baqterya.muzukanji.config;
+package com.baqterya.muzukanji.model;
 
 import com.baqterya.muzukanji.model.Kanji;
 import com.baqterya.muzukanji.model.KanjiRepository;
