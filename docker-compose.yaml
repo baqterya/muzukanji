@@ -8,8 +8,8 @@ services:
       - 'kanji-data:/var/lib/muzukanji-db'
     environment:
       - 'POSTGRES_DB=muzukanji'
-      - 'POSTGRES_PASSWORD=password'
       - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=password'
       - 'ENCODING=UTF8'
       - 'LANG=ja_JP.UTF-8'
   pgadmin:
@@ -21,6 +21,22 @@ services:
       - 'PGADMIN_DEFAULT_PASSWORD=postgres'
     volumes:
       - 'kanji-data:/var/lib/pgadmin'
+    depends_on:
+      - 'postgres'
+  keycloak:
+    command: 'start-dev'
+    image: 'quay.io/keycloak/keycloak:23.0.0'
+    ports:
+      - '5252:8080'
+    environment:
+      - 'DB_VENDOR=POSTGRES'
+      - 'DB_DATABASE=muzukanji'
+      - 'DB_USER=postgres'
+      - 'DB_PASSWORD=password'
+      - 'KEYCLOAK_ADMIN=admin'
+      - 'KEYCLOAK_ADMIN_PASSWORD=password'
+    volumes:
+      - 'kanji-data:/var/lib/keycloak'
     depends_on:
       - 'postgres'
 volumes:
