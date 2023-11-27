@@ -87,6 +87,8 @@ class MuzukanjiApplicationTests {
 		kanjiRepository.saveAll(testData);
 
 		given()
+				.auth()
+				.basic("admin", "password")
 				.contentType(ContentType.JSON)
 				.when()
 				.get("api/v1/kanji")
