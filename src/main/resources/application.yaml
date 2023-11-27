@@ -13,8 +13,18 @@ spring:
       hibernate:
         format_sql: true
     database: postgresql
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-url: http://localhost:5252/realms/muzukanji
+          jwk-set-url: ${spring.security.oauth2.resourceserver.jwt.issuer-url}/protocol/openid-connect/certs
 server:
   port: 5555
   error:
     include-message: always
-
+jwt:
+  auth:
+    converter:
+      resource-id: muzukanji-rest-api
+      principle-attribute: preferred_username
