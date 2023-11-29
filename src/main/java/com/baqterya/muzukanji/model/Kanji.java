@@ -50,8 +50,4 @@ public class Kanji {
     private String jlptLevel;
     private Integer jyoyoGradeTaught;
     private Integer mostUsedInNewspapers;
-    @Type(ListArrayType.class)
-    @Column(columnDefinition = "text[]")
-    private List<String> radicals;
-
 }

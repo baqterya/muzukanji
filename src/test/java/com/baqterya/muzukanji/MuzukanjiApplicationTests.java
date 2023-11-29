@@ -68,7 +68,6 @@ class MuzukanjiApplicationTests {
 						.jlptLevel("N5")
 						.jyoyoGradeTaught(1)
 						.mostUsedInNewspapers(5)
-						.radicals(List.of("人"))
 						.build(),
 				Kanji.builder()
 						.kanji("空")
@@ -81,7 +80,6 @@ class MuzukanjiApplicationTests {
 						.jlptLevel("N4")
 						.jyoyoGradeTaught(1)
 						.mostUsedInNewspapers(304)
-						.radicals(List.of("儿", "宀", "工", "穴"))
 						.build()
 		);
 		kanjiRepository.saveAll(testData);

@@ -31,6 +31,5 @@ public interface KanjiRepository extends JpaRepository<Kanji, Integer> {
 
 //    List<Optional<Kanji>> findByUsage(Integer usage);
 
-//    List<Optional<Kanji>> findByRadical(List<String> radicals);
 
 }
