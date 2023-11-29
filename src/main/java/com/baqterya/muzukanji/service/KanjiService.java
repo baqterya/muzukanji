@@ -3,9 +3,10 @@ package com.baqterya.muzukanji.service;
 import com.baqterya.muzukanji.model.Kanji;
 import com.baqterya.muzukanji.repository.KanjiRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,8 +15,8 @@ public class KanjiService {
 
     private final KanjiRepository kanjiRepository;
 
-    public List<Kanji> getAllKanji() {
-        return kanjiRepository.findAll();
+    public Page<Kanji> getAllKanji(Pageable pagingSort){
+        return kanjiRepository.findAll(pagingSort);
     }
 
     public void addNewKanji(Kanji newKanji) {
