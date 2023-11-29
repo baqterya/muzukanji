@@ -1,7 +1,7 @@
 package com.baqterya.muzukanji;
 
 import com.baqterya.muzukanji.model.Kanji;
-import com.baqterya.muzukanji.model.KanjiRepository;
+import com.baqterya.muzukanji.repository.KanjiRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterAll;

@@ -1,5 +1,7 @@
-package com.baqterya.muzukanji.model;
+package com.baqterya.muzukanji.service;
 
+import com.baqterya.muzukanji.model.Kanji;
+import com.baqterya.muzukanji.repository.KanjiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

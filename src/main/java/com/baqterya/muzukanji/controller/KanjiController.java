@@ -1,5 +1,7 @@
-package com.baqterya.muzukanji.model;
+package com.baqterya.muzukanji.controller;
 
+import com.baqterya.muzukanji.model.Kanji;
+import com.baqterya.muzukanji.service.KanjiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

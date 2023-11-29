@@ -1,5 +1,6 @@
-package com.baqterya.muzukanji.model;
+package com.baqterya.muzukanji.repository;
 
+import com.baqterya.muzukanji.model.Kanji;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

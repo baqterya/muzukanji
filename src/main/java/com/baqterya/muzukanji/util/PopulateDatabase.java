@@ -1,7 +1,7 @@
-package com.baqterya.muzukanji.model;
+package com.baqterya.muzukanji.util;
 
 import com.baqterya.muzukanji.model.Kanji;
-import com.baqterya.muzukanji.model.KanjiRepository;
+import com.baqterya.muzukanji.repository.KanjiRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
