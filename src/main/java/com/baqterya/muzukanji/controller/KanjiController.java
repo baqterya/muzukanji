@@ -32,7 +32,7 @@ public class KanjiController {
     @PreAuthorize("permitAll")
     public ResponseEntity<Map<String, Object>> getAllKanji(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "3") Integer size,
+            @RequestParam(defaultValue = "50") Integer size,
             @RequestParam(defaultValue = "id,asc") String[] sort
     ) {
         try {
