@@ -1,6 +1,8 @@
 package com.baqterya.muzukanji.controller;
 
 import com.baqterya.muzukanji.model.Kanji;
+import com.baqterya.muzukanji.model.KanjiModel;
+import com.baqterya.muzukanji.model.KanjiModelAssembler;
 import com.baqterya.muzukanji.service.KanjiService;
 import com.baqterya.muzukanji.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,12 +25,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.hateoas.PagedModel.*;
+
 @RestController
 @RequestMapping(path = "api/v1/kanji")
 @RequiredArgsConstructor
 public class KanjiController {
 
     private final KanjiService kanjiService;
+    private final KanjiModelAssembler kanjiModelAssembler;
+    private final PagedResourcesAssembler<Kanji> pagedResourcesAssembler;
 
     @GetMapping()
     @PreAuthorize("permitAll")
@@ -41,17 +49,23 @@ public class KanjiController {
             Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
 
             Page<Kanji> kanjiPage = kanjiService.getAllKanji(pagingSort);
-            List<Kanji> kanjiList = kanjiPage.getContent();
+            PagedModel<KanjiModel> kanjiPagedModel = pagedResourcesAssembler.toModel(kanjiPage, kanjiModelAssembler);
 
+
+            List<Kanji> kanjiList = kanjiPage.getContent();
             if (kanjiList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+            PageMetadata metadata = kanjiPagedModel.getMetadata();
+            if (metadata == null) {
+                throw new Exception();
+            }
 
             Map<String, Object> paginationData = new HashMap<>();
-            paginationData.put("currentPage", kanjiPage.getNumber());
-            paginationData.put("countTotal", kanjiPage.getTotalElements());
-            paginationData.put("pagesTotal", kanjiPage.getTotalPages());
+
             paginationData.put("warning", "entries and pages are counted from 0 (eg. last page is 262)");
+            paginationData.put("metadata", kanjiPagedModel.getMetadata());
+            paginationData.put("links", kanjiPagedModel.getLinks());
 
             Map<String, Object> response = new HashMap<>();
             response.put("pagination", paginationData);
