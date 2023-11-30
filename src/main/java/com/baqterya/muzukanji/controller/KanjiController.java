@@ -51,6 +51,7 @@ public class KanjiController {
             paginationData.put("currentPage", kanjiPage.getNumber());
             paginationData.put("countTotal", kanjiPage.getTotalElements());
             paginationData.put("pagesTotal", kanjiPage.getTotalPages());
+            paginationData.put("warning", "entries and pages are counted from 0 (eg. last page is 262)");
 
             Map<String, Object> response = new HashMap<>();
             response.put("pagination", paginationData);
