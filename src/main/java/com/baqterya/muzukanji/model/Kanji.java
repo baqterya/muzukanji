@@ -29,6 +29,7 @@ public class Kanji {
             strategy = GenerationType.SEQUENCE,
             generator = "kanji_sequence"
     )
+    @Column(columnDefinition = "serial")
     private Integer id;
     private String kanji;
     @Type(ListArrayType.class)
@@ -50,4 +51,28 @@ public class Kanji {
     private String jlptLevel;
     private Integer jyoyoGradeTaught;
     private Integer mostUsedInNewspapers;
+
+    public Kanji(
+            String kanji,
+            List<String> meanings,
+            List<String> kunyomi,
+            List<String> kunyomi_romaji,
+            List<String> onyomi,
+            List<String> onyomi_romaji,
+            Integer strokes,
+            String jlptLevel,
+            Integer jyoyoGradeTaught,
+            Integer mostUsedInNewspapers
+    ) {
+        this.kanji = kanji;
+        this.meanings = meanings;
+        this.kunyomi = kunyomi;
+        this.kunyomi_romaji = kunyomi_romaji;
+        this.onyomi = onyomi;
+        this.onyomi_romaji = onyomi_romaji;
+        this.strokes = strokes;
+        this.jlptLevel = jlptLevel;
+        this.jyoyoGradeTaught = jyoyoGradeTaught;
+        this.mostUsedInNewspapers = mostUsedInNewspapers;
+    }
 }
