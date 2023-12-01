@@ -84,10 +84,12 @@ public class KanjiController {
         return kanjiService.getKanjiById(id);
     }
 
-    @GetMapping("/admin")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('client_admin')")
-    public String helloAdmin() {
-        return "hello admin";
+    public void deleteKanji(
+            @PathVariable Integer id
+    ) {
+        kanjiService.deleteKanji(id);
     }
 
 }
