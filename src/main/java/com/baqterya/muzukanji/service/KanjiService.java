@@ -32,10 +32,20 @@ public class KanjiService {
     public void addNewKanji(Kanji newKanji) {
         Optional<Kanji> kanjiById = kanjiRepository.findById(newKanji.getId());
         if (kanjiById.isPresent()) {
-            throw new IllegalStateException(String.format(
-                    "Kanji %s already in the database", newKanji.getKanji()
-            ));
+            throw new IllegalStateException(
+                    String.format("Kanji %s already in the database", newKanji.getKanji()
+                    ));
         }
         kanjiRepository.save(newKanji);
+    }
+
+    public void deleteKanji(Integer kanjiId) {
+        if (kanjiRepository.existsById(kanjiId)) {
+            kanjiRepository.deleteById(kanjiId);
+        } else {
+            throw new IllegalStateException(
+                    String.format("Kanji with id: %d does not exists", kanjiId)
+            );
+        }
     }
 }
