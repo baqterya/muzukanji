@@ -52,6 +52,10 @@ public class KanjiController {
             PagedModel<KanjiModel> kanjiPagedModel = pagedResourcesAssembler.toModel(kanjiPage, kanjiModelAssembler);
 
             Collection<KanjiModel> kanjiList = kanjiPagedModel.getContent();
+            for (KanjiModel kanjiModel : kanjiList) {
+                Link selfLink = WebMvcLinkBuilder.linkTo(KanjiController.class).slash(kanjiModel.getId()).withSelfRel();
+                kanjiModel.add(selfLink);
+            }
             if (kanjiList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
