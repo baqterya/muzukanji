@@ -19,6 +19,16 @@ public class KanjiService {
         return kanjiRepository.findAll(pagingSort);
     }
 
+    public Kanji getKanjiById(Integer kanjiId) {
+        Optional<Kanji> kanjiById = kanjiRepository.findById(kanjiId);
+        if (kanjiById.isPresent()) {
+            return kanjiById.get();
+        }
+        throw new IllegalStateException(String.format(
+                "Kanji with id %d not found in the database", kanjiId
+        ));
+    }
+
     public void addNewKanji(Kanji newKanji) {
         Optional<Kanji> kanjiById = kanjiRepository.findById(newKanji.getId());
         if (kanjiById.isPresent()) {
