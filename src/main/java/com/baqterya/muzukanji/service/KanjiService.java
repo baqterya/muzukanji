@@ -2,12 +2,15 @@ package com.baqterya.muzukanji.service;
 
 import com.baqterya.muzukanji.model.Kanji;
 import com.baqterya.muzukanji.repository.KanjiRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static com.baqterya.muzukanji.util.Const.KANJI_NOT_FOUND_BY_ID_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +27,8 @@ public class KanjiService {
         if (kanjiById.isPresent()) {
             return kanjiById.get();
         }
-        throw new IllegalStateException(String.format(
-                "Kanji with id %d not found in the database", kanjiId
+        throw new EntityNotFoundException(String.format(
+                KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId
         ));
     }
 
@@ -40,12 +43,11 @@ public class KanjiService {
     }
 
     public void deleteKanji(Integer kanjiId) {
-        if (kanjiRepository.existsById(kanjiId)) {
-            kanjiRepository.deleteById(kanjiId);
-        } else {
-            throw new IllegalStateException(
-                    String.format("Kanji with id: %d does not exists", kanjiId)
-            );
+        if (!kanjiRepository.existsById(kanjiId)) {
+            throw new EntityNotFoundException(String.format(
+                    KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId
+            ));
         }
+        kanjiRepository.deleteById(kanjiId);
     }
 }
