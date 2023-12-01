@@ -25,7 +25,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/api/v1/kanji/admin").authenticated()
-                                .requestMatchers("api/v1/kanji/").permitAll()
+                                .requestMatchers("api/v1/kanji").permitAll()
                                 .requestMatchers("api/v1/kanji/{id}").permitAll()
                 )
                 .oauth2ResourceServer(
