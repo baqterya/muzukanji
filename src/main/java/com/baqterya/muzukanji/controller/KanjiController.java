@@ -36,6 +36,10 @@ public class KanjiController {
     private final KanjiModelAssembler kanjiModelAssembler;
     private final PagedResourcesAssembler<Kanji> pagedResourcesAssembler;
 
+
+    // OPEN ENDPOINTS
+
+
     @GetMapping()
     @PreAuthorize("permitAll")
     public ResponseEntity<Map<String, Object>> getAllKanji(
@@ -87,6 +91,17 @@ public class KanjiController {
     ) {
         return kanjiService.getKanjiById(id);
     }
+
+
+    // PROTECTED ENDPOINTS
+
+    @PostMapping
+    public void addNewKanji(
+            @RequestBody Kanji kanji
+    ) {
+        kanjiService.addNewKanji(kanji);
+    }
+
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('client_admin')")
