@@ -1,8 +1,11 @@
 package com.baqterya.muzukanji.service;
 
 import com.baqterya.muzukanji.model.Kanji;
+import com.baqterya.muzukanji.model.KanjiDto;
 import com.baqterya.muzukanji.repository.KanjiRepository;
+import com.baqterya.muzukanji.util.KanjiMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +20,7 @@ import static com.baqterya.muzukanji.util.Const.KANJI_NOT_FOUND_BY_ID_MESSAGE;
 public class KanjiService {
 
     private final KanjiRepository kanjiRepository;
+    private final KanjiMapper kanjiMapper;
 
     public Page<Kanji> getAllKanji(Pageable pagingSort){
         return kanjiRepository.findAll(pagingSort);
@@ -44,5 +48,14 @@ public class KanjiService {
             ));
         }
         kanjiRepository.deleteById(kanjiId);
+    }
+
+    public void updateKanji(KanjiDto dto) {
+        Kanji kanjiToUpdate = kanjiRepository.findById(dto.getId())
+                .orElseThrow(
+                        () -> new EntityNotFoundException(String.format(KANJI_NOT_FOUND_BY_ID_MESSAGE, dto.getId()))
+                );
+        kanjiMapper.updateKanjiFromDto(dto, kanjiToUpdate);
+        kanjiRepository.save(kanjiToUpdate);
     }
 }
