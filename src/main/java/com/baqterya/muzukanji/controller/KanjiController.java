@@ -1,6 +1,7 @@
 package com.baqterya.muzukanji.controller;
 
 import com.baqterya.muzukanji.model.Kanji;
+import com.baqterya.muzukanji.model.KanjiDto;
 import com.baqterya.muzukanji.model.KanjiModel;
 import com.baqterya.muzukanji.model.KanjiModelAssembler;
 import com.baqterya.muzukanji.service.KanjiService;
@@ -100,6 +101,14 @@ public class KanjiController {
             @RequestBody Kanji kanji
     ) {
         kanjiService.addNewKanji(kanji);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('client_admin')")
+    public void updateKanji(
+            @RequestBody KanjiDto kanjiDto
+    ) {
+        kanjiService.updateKanji(kanjiDto);
     }
 
 
