@@ -1,5 +1,6 @@
 package com.baqterya.muzukanji.exceptionhandling;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -16,6 +17,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(EntityExistsException.class)
+    protected ResponseEntity<Object> handleEntityExists(EntityExistsException ex) {
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
