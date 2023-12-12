@@ -4,6 +4,7 @@ import com.baqterya.muzukanji.model.Kanji;
 import com.baqterya.muzukanji.model.KanjiDto;
 import com.baqterya.muzukanji.repository.KanjiRepository;
 import com.baqterya.muzukanji.util.KanjiMapper;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.baqterya.muzukanji.util.Const.KANJI_ALREADY_EXISTS_MESSAGE;
 import static com.baqterya.muzukanji.util.Const.KANJI_NOT_FOUND_BY_ID_MESSAGE;
 
 @Service
@@ -37,7 +39,12 @@ public class KanjiService {
     }
 
     public void addNewKanji(Kanji newKanji) {
-        //TODO IMPLEMENT CHECK BY KANJI
+        Optional<Kanji> kanjiByKanji = kanjiRepository.findByKanji(newKanji.getKanji());
+        if (kanjiByKanji.isPresent()) {
+            throw new EntityExistsException(String.format(
+                    KANJI_ALREADY_EXISTS_MESSAGE, newKanji.getKanji()
+            ));
+        }
         kanjiRepository.save(newKanji);
     }
 
