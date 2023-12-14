@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "kanji_entity")
 @Table(name = "kanji_table")
 public class Kanji {
 
