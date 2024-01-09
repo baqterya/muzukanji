@@ -6,7 +6,6 @@ import com.baqterya.muzukanji.repository.KanjiRepository;
 import com.baqterya.muzukanji.util.KanjiMapper;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

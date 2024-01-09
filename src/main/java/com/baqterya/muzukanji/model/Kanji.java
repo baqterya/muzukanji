@@ -40,13 +40,13 @@ public class Kanji {
     private List<String> kunyomi;
     @Type(ListArrayType.class)
     @Column(columnDefinition = "text[]")
-    private List<String> kunyomi_romaji;
+    private List<String> kunyomiRomaji;
     @Type(ListArrayType.class)
     @Column(columnDefinition = "text[]")
     private List<String> onyomi;
     @Type(ListArrayType.class)
     @Column(columnDefinition = "text[]")
-    private List<String> onyomi_romaji;
+    private List<String> onyomiRomaji;
     private Integer strokes;
     private String jlptLevel;
     private Integer jyoyoGradeTaught;
@@ -56,9 +56,9 @@ public class Kanji {
             String kanji,
             List<String> meanings,
             List<String> kunyomi,
-            List<String> kunyomi_romaji,
+            List<String> kunyomiRomaji,
             List<String> onyomi,
-            List<String> onyomi_romaji,
+            List<String> onyomiRomaji,
             Integer strokes,
             String jlptLevel,
             Integer jyoyoGradeTaught,
@@ -67,9 +67,9 @@ public class Kanji {
         this.kanji = kanji;
         this.meanings = meanings;
         this.kunyomi = kunyomi;
-        this.kunyomi_romaji = kunyomi_romaji;
+        this.kunyomiRomaji = kunyomiRomaji;
         this.onyomi = onyomi;
-        this.onyomi_romaji = onyomi_romaji;
+        this.onyomiRomaji = onyomiRomaji;
         this.strokes = strokes;
         this.jlptLevel = jlptLevel;
         this.jyoyoGradeTaught = jyoyoGradeTaught;
