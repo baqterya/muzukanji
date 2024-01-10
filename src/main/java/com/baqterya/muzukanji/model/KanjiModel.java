@@ -16,5 +16,5 @@ import java.util.List;
 public class KanjiModel extends RepresentationModel<KanjiModel> {
     private Integer id;
     private String kanji;
-    private List<String> meanings;
+    private String meanings;
 }

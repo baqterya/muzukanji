@@ -32,21 +32,11 @@ public class Kanji {
     @Column(columnDefinition = "serial")
     private Integer id;
     private String kanji;
-    @Type(ListArrayType.class)
-    @Column(columnDefinition = "text[]")
-    private List<String> meanings;
-    @Type(ListArrayType.class)
-    @Column(columnDefinition = "text[]")
-    private List<String> kunyomi;
-    @Type(ListArrayType.class)
-    @Column(columnDefinition = "text[]")
-    private List<String> kunyomiRomaji;
-    @Type(ListArrayType.class)
-    @Column(columnDefinition = "text[]")
-    private List<String> onyomi;
-    @Type(ListArrayType.class)
-    @Column(columnDefinition = "text[]")
-    private List<String> onyomiRomaji;
+    private String meanings;
+    private String kunyomi;
+    private String kunyomiRomaji;
+    private String onyomi;
+    private String onyomiRomaji;
     private Integer strokes;
     private String jlptLevel;
     private Integer jyoyoGradeTaught;
@@ -54,11 +44,11 @@ public class Kanji {
 
     public Kanji(
             String kanji,
-            List<String> meanings,
-            List<String> kunyomi,
-            List<String> kunyomiRomaji,
-            List<String> onyomi,
-            List<String> onyomiRomaji,
+            String meanings,
+            String kunyomi,
+            String kunyomiRomaji,
+            String onyomi,
+            String onyomiRomaji,
             Integer strokes,
             String jlptLevel,
             Integer jyoyoGradeTaught,
