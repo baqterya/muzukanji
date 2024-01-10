@@ -10,11 +10,11 @@ import java.util.List;
 public class KanjiDto {
     private Integer id;
     private String kanji;
-    private List<String> meanings;
-    private List<String> kunyomi;
-    private List<String> kunyomi_romaji;
-    private List<String> onyomi;
-    private List<String> onyomi_romaji;
+    private String meanings;
+    private String kunyomi;
+    private String kunyomi_romaji;
+    private String onyomi;
+    private String onyomi_romaji;
     private Integer strokes;
     private String jlptLevel;
     private Integer jyoyoGradeTaught;
