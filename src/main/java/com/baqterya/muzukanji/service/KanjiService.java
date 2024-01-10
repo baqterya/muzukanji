@@ -3,14 +3,20 @@ package com.baqterya.muzukanji.service;
 import com.baqterya.muzukanji.model.Kanji;
 import com.baqterya.muzukanji.model.KanjiDto;
 import com.baqterya.muzukanji.repository.KanjiRepository;
+import com.baqterya.muzukanji.specification.KanjiSpecification;
 import com.baqterya.muzukanji.util.KanjiMapper;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.baqterya.muzukanji.util.Const.KANJI_ALREADY_EXISTS_MESSAGE;
@@ -23,8 +29,43 @@ public class KanjiService {
     private final KanjiRepository kanjiRepository;
     private final KanjiMapper kanjiMapper;
 
-    public Page<Kanji> getAllKanji(Pageable pagingSort){
-        return kanjiRepository.findAll(pagingSort);
+    public Page<Kanji> searchKanji(
+        String kanji,
+        String meaning,
+        String kunyomi,
+        String kunyomiRomaji,
+        String onyomi,
+        String onyomiRomaji,
+        Integer minStrokes,
+        Integer maxStrokes,
+        String minJlptLevel,
+        String maxJlptLevel,
+        Integer minJyoyoGrade,
+        Integer maxJyoyoGrade,
+        Integer minUsage,
+        Integer maxUsage,
+        Pageable pagingSort
+    ) {
+
+        Specification<Kanji> kanjiSpecification = KanjiSpecification
+        .builder()
+        .kanji(kanji)
+        .meaning(meaning)
+        .kunyomi(kunyomi)
+        .kunyomiRomaji(kunyomiRomaji)
+        .onyomi(onyomi)
+        .onyomiRomaji(onyomiRomaji)
+        .minStrokes(minStrokes)
+        .maxStrokes(maxStrokes)
+        .minJlptLevel(minJlptLevel)
+        .maxJlptLevel(maxJlptLevel)
+        .minJyoyoGrade(minJyoyoGrade)
+        .maxJyoyoGrade(maxJyoyoGrade)
+        .minUsage(minUsage)
+        .maxUsage(maxUsage)
+        .build();
+
+        return kanjiRepository.findAll(kanjiSpecification, pagingSort);
     }
 
     public Kanji getKanjiById(Integer kanjiId) {
