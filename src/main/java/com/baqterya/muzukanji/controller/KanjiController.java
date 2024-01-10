@@ -6,6 +6,9 @@ import com.baqterya.muzukanji.model.KanjiModel;
 import com.baqterya.muzukanji.model.KanjiModelAssembler;
 import com.baqterya.muzukanji.service.KanjiService;
 import com.baqterya.muzukanji.util.Util;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +22,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -26,11 +30,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.baqterya.muzukanji.util.Const.JLPT_ERROR_MESSAGE;
+import static com.baqterya.muzukanji.util.Const.JLPT_REGEX;
 import static org.springframework.hateoas.PagedModel.*;
 
 @RestController
 @RequestMapping(path = "api/v1/kanji")
 @RequiredArgsConstructor
+@Validated
 public class KanjiController {
 
     private final KanjiService kanjiService;
@@ -50,14 +57,16 @@ public class KanjiController {
             @RequestParam(required = false) String kunyomiRomaji,
             @RequestParam(required = false) String onyomi,
             @RequestParam(required = false) String onyomiRomaji,
-            @RequestParam(required = false) Integer minStrokes,
-            @RequestParam(required = false) Integer maxStrokes,
-            @RequestParam(required = false) String minJlptLevel,
-            @RequestParam(required = false) String maxJlptLevel,
-            @RequestParam(required = false) Integer minJyoyoGrade,
-            @RequestParam(required = false) Integer maxJyoyoGrade,
-            @RequestParam(required = false) Integer minUsage,
-            @RequestParam(required = false) Integer maxUsage,
+            @RequestParam(required = false) @Min(1) @Max(34) Integer minStrokes,
+            @RequestParam(required = false) @Min(1) @Max(34) Integer maxStrokes,
+            @RequestParam(required = false) @Pattern(regexp = JLPT_REGEX, message = JLPT_ERROR_MESSAGE)
+            String minJlptLevel,
+            @RequestParam(required = false) @Pattern(regexp = JLPT_REGEX, message = JLPT_ERROR_MESSAGE)
+            String maxJlptLevel,
+            @RequestParam(required = false) @Min(1) @Max(10) Integer minJyoyoGrade,
+            @RequestParam(required = false) @Min(1) @Max(10) Integer maxJyoyoGrade,
+            @RequestParam(required = false) @Min(1) @Max(2501) Integer minUsage, //constraintviolatedexception
+            @RequestParam(required = false) @Min(1) @Max(2501) Integer maxUsage,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "50") Integer size,
             @RequestParam(defaultValue = "id,asc") String[] sort
