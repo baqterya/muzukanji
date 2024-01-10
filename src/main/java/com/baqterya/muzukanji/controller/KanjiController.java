@@ -43,7 +43,21 @@ public class KanjiController {
 
     @GetMapping()
     @PreAuthorize("permitAll")
-    public ResponseEntity<Map<String, Object>> getAllKanji(
+    public ResponseEntity<Map<String, Object>> getKanji(
+            @RequestParam(required = false) String kanji,
+            @RequestParam(required = false) String meaning,
+            @RequestParam(required = false) String kunyomi,
+            @RequestParam(required = false) String kunyomiRomaji,
+            @RequestParam(required = false) String onyomi,
+            @RequestParam(required = false) String onyomiRomaji,
+            @RequestParam(required = false) Integer minStrokes,
+            @RequestParam(required = false) Integer maxStrokes,
+            @RequestParam(required = false) String minJlptLevel,
+            @RequestParam(required = false) String maxJlptLevel,
+            @RequestParam(required = false) Integer minJyoyoGrade,
+            @RequestParam(required = false) Integer maxJyoyoGrade,
+            @RequestParam(required = false) Integer minUsage,
+            @RequestParam(required = false) Integer maxUsage,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "50") Integer size,
             @RequestParam(defaultValue = "id,asc") String[] sort
@@ -53,7 +67,10 @@ public class KanjiController {
 
             Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
 
-            Page<Kanji> kanjiPage = kanjiService.getAllKanji(pagingSort);
+            Page<Kanji> kanjiPage = kanjiService.searchKanji(
+                    kanji, meaning, kunyomi, kunyomiRomaji, onyomi, onyomiRomaji, minStrokes, maxStrokes,
+                    minJlptLevel, maxJlptLevel, minJyoyoGrade, maxJyoyoGrade, minUsage, maxUsage, pagingSort
+            );
             PagedModel<KanjiModel> kanjiPagedModel = pagedResourcesAssembler.toModel(kanjiPage, kanjiModelAssembler);
 
             Collection<KanjiModel> kanjiList = kanjiPagedModel.getContent();
