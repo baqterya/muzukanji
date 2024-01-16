@@ -1,4 +1,4 @@
-package com.baqterya.muzukanji.UnitTests.repository;
+package com.baqterya.muzukanji.unittests.repository;
 
 import com.baqterya.muzukanji.model.Kanji;
 import com.baqterya.muzukanji.repository.KanjiRepository;
