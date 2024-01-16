@@ -22,4 +22,18 @@ public class Const {
             .jyoyoGradeTaught(1)
             .mostUsedInNewspapers(2)
             .build();
+
+    public static final Kanji TEST_KANJI_2 =  Kanji.builder()
+            .kanji("力")
+            .meanings("Power, Strength, Strong, Strain, Bear Up, Exert")
+            .kunyomi("ちから")
+            .kunyomiRomaji("chikara")
+            .onyomi("リョク, リキ, リイ")
+            .onyomiRomaji("riku, riki, rii")
+            .strokes(2)
+            .jlptLevel("N4")
+            .jyoyoGradeTaught(1)
+            .mostUsedInNewspapers(62)
+            .build();
+
 }
