@@ -10,10 +10,16 @@ public class Const {
     public static final String JLPT_ERROR_MESSAGE
             = "Invalid JLPT level entered. JLPT level must match (N5|N4|N3|N2|N1|n5|n4|n3|n2|n1)" ;
 
-    public static final Kanji TEST_KANJI = new Kanji(
-            "一", "One, One Radical (no.1)",
-            "ひと-, ひと.つ", "hito-, hito.tsu",
-            "イチ, イツ", "ichi, itsu",
-            1, "N5", 1, 2
-    );
+    public static final Kanji TEST_KANJI =  Kanji.builder()
+            .kanji("一")
+            .meanings("One, One Radical (no.1)")
+            .kunyomi("ひと-, ひと.つ")
+            .kunyomiRomaji("hito-, hito.tsu")
+            .onyomi("イチ, イツ")
+            .onyomiRomaji("ichi, itsu")
+            .strokes(1)
+            .jlptLevel("N5")
+            .jyoyoGradeTaught(1)
+            .mostUsedInNewspapers(2)
+            .build();
 }
