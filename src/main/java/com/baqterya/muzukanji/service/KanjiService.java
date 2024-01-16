@@ -78,7 +78,7 @@ public class KanjiService {
         ));
     }
 
-    public void addNewKanji(Kanji newKanji) {
+    public Kanji addNewKanji(Kanji newKanji) {
         Optional<Kanji> kanjiByKanji = kanjiRepository.findByKanji(newKanji.getKanji());
         if (kanjiByKanji.isPresent()) {
             throw new EntityExistsException(String.format(
@@ -86,6 +86,7 @@ public class KanjiService {
             ));
         }
         kanjiRepository.save(newKanji);
+        return newKanji;
     }
 
     public void deleteKanji(Integer kanjiId) {
@@ -97,12 +98,13 @@ public class KanjiService {
         kanjiRepository.deleteById(kanjiId);
     }
 
-    public void updateKanji(KanjiDto dto) {
+    public Kanji updateKanji(KanjiDto dto) {
         Kanji kanjiToUpdate = kanjiRepository.findById(dto.getId())
                 .orElseThrow(
                         () -> new EntityNotFoundException(String.format(KANJI_NOT_FOUND_BY_ID_MESSAGE, dto.getId()))
                 );
         kanjiMapper.updateKanjiFromDto(dto, kanjiToUpdate);
         kanjiRepository.save(kanjiToUpdate);
+        return kanjiToUpdate;
     }
 }
