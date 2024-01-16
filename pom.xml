@@ -94,6 +94,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-security-adapter</artifactId>
+			<version>23.0.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<scope>test</scope>
