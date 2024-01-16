@@ -122,14 +122,15 @@ public class KanjiController {
 
     // PROTECTED ENDPOINTS
 
-    @PostMapping
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('client_admin')")
     public void addNewKanji(
             @RequestBody Kanji kanji
     ) {
         kanjiService.addNewKanji(kanji);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('client_admin')")
     public void updateKanji(
             @RequestBody KanjiDto kanjiDto
@@ -138,7 +139,7 @@ public class KanjiController {
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('client_admin')")
     public void deleteKanji(
             @PathVariable Integer id
