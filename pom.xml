@@ -94,6 +94,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.github.dasniko</groupId>
+			<artifactId>testcontainers-keycloak</artifactId>
+			<version>2.1.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-spring-security-adapter</artifactId>
 			<version>23.0.4</version>
