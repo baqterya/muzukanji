@@ -12,9 +12,9 @@ public class KanjiDto {
     private String kanji;
     private String meanings;
     private String kunyomi;
-    private String kunyomi_romaji;
+    private String kunyomiRomaji;
     private String onyomi;
-    private String onyomi_romaji;
+    private String onyomiRomaji;
     private Integer strokes;
     private String jlptLevel;
     private Integer jyoyoGradeTaught;
