@@ -1814,7 +1814,7 @@
   },
   "clientPolicies": {
     "policies": []
-  }
+  },
   "users" : [
 	{
 		"username": "muzukanji_admin",
