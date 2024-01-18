@@ -8,7 +8,6 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class KanjiDto {
-    private Integer id;
     private String kanji;
     private String meanings;
     private String kunyomi;
