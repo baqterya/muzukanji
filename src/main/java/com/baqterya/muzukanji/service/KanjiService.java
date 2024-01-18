@@ -8,15 +8,13 @@ import com.baqterya.muzukanji.util.KanjiMapper;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static com.baqterya.muzukanji.util.Const.KANJI_ALREADY_EXISTS_MESSAGE;
@@ -27,7 +25,8 @@ import static com.baqterya.muzukanji.util.Const.KANJI_NOT_FOUND_BY_ID_MESSAGE;
 public class KanjiService {
 
     private final KanjiRepository kanjiRepository;
-    private final KanjiMapper kanjiMapper;
+    @Autowired
+    private final KanjiMapper kanjiMapper = Mappers.getMapper(KanjiMapper.class);
 
     public Page<Kanji> searchKanji(
         String kanji,
@@ -78,33 +77,37 @@ public class KanjiService {
         ));
     }
 
-    public Kanji addNewKanji(Kanji newKanji) {
-        Optional<Kanji> kanjiByKanji = kanjiRepository.findByKanji(newKanji.getKanji());
-        if (kanjiByKanji.isPresent()) {
-            throw new EntityExistsException(String.format(
-                    KANJI_ALREADY_EXISTS_MESSAGE, newKanji.getKanji()
-            ));
-        }
+    public Kanji createKanji(KanjiDto newKanjiDto) {
+        Kanji newKanji = kanjiMapper.kanjiDtoToKanji(newKanjiDto);
+        kanjiRepository.findByKanji(newKanji.getKanji()).ifPresent(
+            foundKanji -> {
+                throw new EntityExistsException(String.format(
+                        KANJI_ALREADY_EXISTS_MESSAGE, newKanji.getKanji()
+                ));
+            }
+        );
         kanjiRepository.save(newKanji);
         return newKanji;
     }
 
-    public void deleteKanji(Integer kanjiId) {
-        if (!kanjiRepository.existsById(kanjiId)) {
-            throw new EntityNotFoundException(String.format(
-                    KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId
-            ));
-        }
-        kanjiRepository.deleteById(kanjiId);
-    }
-
-    public Kanji updateKanji(KanjiDto dto) {
-        Kanji kanjiToUpdate = kanjiRepository.findById(dto.getId())
+    public Kanji updateKanji(Integer kanjiId, KanjiDto updatedKanjiDto) {
+        Kanji kanjiToUpdate = kanjiRepository.findById(kanjiId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException(String.format(KANJI_NOT_FOUND_BY_ID_MESSAGE, dto.getId()))
+                        () -> new EntityNotFoundException(String.format(KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId))
                 );
-        kanjiMapper.updateKanjiFromDto(dto, kanjiToUpdate);
+        kanjiMapper.updateKanjiFromDto(updatedKanjiDto, kanjiToUpdate);
         kanjiRepository.save(kanjiToUpdate);
         return kanjiToUpdate;
+    }
+
+    public void deleteKanji(Integer kanjiId) {
+        kanjiRepository.findById(kanjiId).ifPresentOrElse(
+                foundKanji -> kanjiRepository.deleteById(kanjiId),
+                () -> {
+                    throw new EntityNotFoundException(String.format(
+                            KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId
+                    ));
+                }
+        );
     }
 }
