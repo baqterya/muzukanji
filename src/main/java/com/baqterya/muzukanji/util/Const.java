@@ -1,6 +1,7 @@
 package com.baqterya.muzukanji.util;
 
 import com.baqterya.muzukanji.model.Kanji;
+import com.baqterya.muzukanji.model.KanjiDto;
 
 public class Const {
     public static final String KANJI_NOT_FOUND_BY_ID_MESSAGE = "Kanji with id %d not found in the database";
@@ -36,4 +37,16 @@ public class Const {
             .mostUsedInNewspapers(62)
             .build();
 
+    public static final KanjiDto TEST_KANJI_DTO = KanjiDto.builder()
+            .kanji("一")
+            .meanings("One, One Radical (no.1)")
+            .kunyomi("ひと-, ひと.つ")
+            .kunyomiRomaji("hito-, hito.tsu")
+            .onyomi("イチ, イツ")
+            .onyomiRomaji("ichi, itsu")
+            .strokes(1)
+            .jlptLevel("N5")
+            .jyoyoGradeTaught(1)
+            .mostUsedInNewspapers(2)
+            .build();
 }
