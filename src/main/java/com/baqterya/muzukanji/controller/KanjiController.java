@@ -51,25 +51,25 @@ public class KanjiController {
     @GetMapping()
     @PreAuthorize("permitAll")
     public ResponseEntity<Map<String, Object>> getKanji(
-            @RequestParam(required = false) String kanji,
-            @RequestParam(required = false) String meaning,
-            @RequestParam(required = false) String kunyomi,
-            @RequestParam(required = false) String kunyomiRomaji,
-            @RequestParam(required = false) String onyomi,
-            @RequestParam(required = false) String onyomiRomaji,
-            @RequestParam(required = false) @Min(1) @Max(34) Integer minStrokes,
-            @RequestParam(required = false) @Min(1) @Max(34) Integer maxStrokes,
-            @RequestParam(required = false) @Pattern(regexp = JLPT_REGEX, message = JLPT_ERROR_MESSAGE)
-            String minJlptLevel,
-            @RequestParam(required = false) @Pattern(regexp = JLPT_REGEX, message = JLPT_ERROR_MESSAGE)
-            String maxJlptLevel,
-            @RequestParam(required = false) @Min(1) @Max(10) Integer minJyoyoGrade,
-            @RequestParam(required = false) @Min(1) @Max(10) Integer maxJyoyoGrade,
-            @RequestParam(required = false) @Min(1) @Max(2501) Integer minUsage, //constraintviolatedexception
-            @RequestParam(required = false) @Min(1) @Max(2501) Integer maxUsage,
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "50") Integer size,
-            @RequestParam(defaultValue = "id,asc") String[] sort
+        @RequestParam(required = false) String kanji,
+        @RequestParam(required = false) String meaning,
+        @RequestParam(required = false) String kunyomi,
+        @RequestParam(required = false) String kunyomiRomaji,
+        @RequestParam(required = false) String onyomi,
+        @RequestParam(required = false) String onyomiRomaji,
+        @RequestParam(required = false) @Min(1) @Max(34) Integer minStrokes,
+        @RequestParam(required = false) @Min(1) @Max(34) Integer maxStrokes,
+        @RequestParam(required = false) @Pattern(regexp = JLPT_REGEX, message = JLPT_ERROR_MESSAGE)
+        String minJlptLevel,
+        @RequestParam(required = false) @Pattern(regexp = JLPT_REGEX, message = JLPT_ERROR_MESSAGE)
+        String maxJlptLevel,
+        @RequestParam(required = false) @Min(1) @Max(10) Integer minJyoyoGrade,
+        @RequestParam(required = false) @Min(1) @Max(10) Integer maxJyoyoGrade,
+        @RequestParam(required = false) @Min(1) @Max(2501) Integer minUsage,
+        @RequestParam(required = false) @Min(1) @Max(2501) Integer maxUsage,
+        @RequestParam(defaultValue = "0") Integer page,
+        @RequestParam(defaultValue = "50") Integer size,
+        @RequestParam(defaultValue = "id,asc") String[] sort
     ) {
         try {
             List<Order> orders = Util.getSortingOrder(sort);
@@ -111,40 +111,41 @@ public class KanjiController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{kanjiId}")
     @PreAuthorize("permitAll")
     public Kanji getKanjiById(
-            @PathVariable Integer id
+        @PathVariable Integer kanjiId
     ) {
-        return kanjiService.getKanjiById(id);
+        return kanjiService.getKanjiById(kanjiId);
     }
 
 
     // PROTECTED ENDPOINTS
 
-    @PostMapping("/add")
+    @PostMapping()
     @PreAuthorize("hasRole('client_admin')")
-    public void addNewKanji(
-            @RequestBody Kanji kanji
+    public ResponseEntity<Kanji> createKanji(
+        @RequestBody KanjiDto newKanjiDto
     ) {
-        kanjiService.addNewKanji(kanji);
+        return new ResponseEntity<>(kanjiService.createKanji(newKanjiDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{kanjiId}")
     @PreAuthorize("hasRole('client_admin')")
-    public void updateKanji(
-            @RequestBody KanjiDto kanjiDto
+    public ResponseEntity<Kanji> updateKanji(
+        @PathVariable Integer kanjiId,
+        @RequestBody KanjiDto updatedKanjiDto
     ) {
-        kanjiService.updateKanji(kanjiDto);
+        return new ResponseEntity<>(kanjiService.updateKanji(kanjiId, updatedKanjiDto), HttpStatus.OK);
     }
 
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('client_admin')")
-    public void deleteKanji(
-            @PathVariable Integer id
+    public ResponseEntity<String> deleteKanji(
+        @PathVariable Integer id
     ) {
-        kanjiService.deleteKanji(id);
+        return new ResponseEntity<>(String.format("Removed Kanji with id %s", id), HttpStatus.OK);
     }
 
 }
