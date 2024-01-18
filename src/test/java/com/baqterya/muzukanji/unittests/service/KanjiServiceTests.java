@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.baqterya.muzukanji.util.Const.TEST_KANJI;
+import static com.baqterya.muzukanji.util.Const.TEST_KANJI_DTO;
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.*;
@@ -38,10 +38,10 @@ public class KanjiServiceTests {
     private KanjiService kanjiService;
 
     @Test
-    public void KanjiService_AddNewKanji_ReturnKanji() {
+    public void KanjiService_CreateKanji_ReturnKanji() {
         when(kanjiRepository.save(any(Kanji.class))).thenReturn(TEST_KANJI);
 
-        Kanji savedKanji = kanjiService.addNewKanji(TEST_KANJI);
+        Kanji savedKanji = kanjiService.createKanji(TEST_KANJI_DTO);
         Assertions.assertThat(savedKanji).isNotNull();
     }
 
@@ -58,16 +58,11 @@ public class KanjiServiceTests {
     @Test
     public void KanjiService_UpdateKanji_ReturnKanji() {
         Integer kanjiId = 1;
-        KanjiDto kanjiDto = new KanjiDto(
-                1, "a", "One, One Radical (no.1)",
-                "ひと-, ひと.つ", "hito-, hito.tsu", "イチ, イツ", "ichi, itsu",
-                1, "N5", 1, 2
-        );
 
         when(kanjiRepository.findById(kanjiId)).thenReturn(Optional.of(TEST_KANJI));
         when(kanjiRepository.save(TEST_KANJI)).thenReturn(TEST_KANJI);
 
-        Kanji updatedKanji = kanjiService.updateKanji(kanjiDto);
+        Kanji updatedKanji = kanjiService.updateKanji(kanjiId, TEST_KANJI_DTO);
         Assertions.assertThat(updatedKanji).isNotNull();
     }
 
