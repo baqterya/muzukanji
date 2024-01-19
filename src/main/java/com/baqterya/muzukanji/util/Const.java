@@ -51,6 +51,19 @@ public class Const {
             .mostUsedInNewspapers(2)
             .build();
 
+    public static final KanjiDto TEST_KANJI_DTO_2 =  KanjiDto.builder()
+            .kanji("力")
+            .meanings("Power, Strength, Strong, Strain, Bear Up, Exert")
+            .kunyomi("ちから")
+            .kunyomiRomaji("chikara")
+            .onyomi("リョク, リキ, リイ")
+            .onyomiRomaji("riku, riki, rii")
+            .strokes(2)
+            .jlptLevel("N4")
+            .jyoyoGradeTaught(1)
+            .mostUsedInNewspapers(62)
+            .build();
+
     public static String TEST_KANJI_PAYLOAD =
             """
                 {
