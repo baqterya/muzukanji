@@ -64,20 +64,4 @@ public class Const {
             .mostUsedInNewspapers(62)
             .build();
 
-    public static String TEST_KANJI_PAYLOAD =
-            """
-                {
-                   "kanji": "一",
-                   "meanings": "One, One Radical (no.1)",
-                   "kunyomi": "ひと-, ひと.つ",
-                   "kunyomiRomaji": "hito-, hito.tsu",
-                   "onyomi": "イチ, イツ",
-                   "onyomiRomaji": "ichi, itsu",
-                   "strokes": 1,
-                   "jlptLevel": "N5",
-                   "jyoyoGradeTaught": 1,
-                   "mostUsedInNewspapers": 2
-                }
-            """;
-
 }
