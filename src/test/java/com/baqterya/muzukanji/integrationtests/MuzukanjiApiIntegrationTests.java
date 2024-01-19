@@ -44,6 +44,7 @@ public class MuzukanjiApiIntegrationTests {
     private static final  String REALM_NAME = "/realms/muzukanji";
     private static final String KANJI_ENDPOINT = "api/v1/kanji";
 
+    private Integer kanjiId = 1;
 
     @LocalServerPort
     private Integer port;
@@ -117,8 +118,9 @@ public class MuzukanjiApiIntegrationTests {
     @Test
     public void WhenGetById_ReturnOkAndKanji() {
         kanjiRepository.save(TEST_KANJI);
+        updateKanjiId();
 
-        Response response = when().get(KANJI_ENDPOINT + "/1");
+        Response response = when().get(KANJI_ENDPOINT + "/" + kanjiId);
         response.then().statusCode(HttpStatus.OK.value());
         Assertions.assertThat(response.body().as(Kanji.class))
             .isNotNull()
@@ -138,7 +140,8 @@ public class MuzukanjiApiIntegrationTests {
 
     @Test
     public void GivenAuthenticatedUser_WhenCreateKanji_ReturnCreatedAndKanjiDto() throws URISyntaxException {
-        TEST_KANJI.setId(1);
+        Kanji expectedKanji = TEST_KANJI;
+        expectedKanji.setId(kanjiId);
 
         Response response = given().header("Authorization", getKeycloakBearerToken())
             .when()
@@ -149,21 +152,22 @@ public class MuzukanjiApiIntegrationTests {
         response.then().statusCode(HttpStatus.CREATED.value());
         Assertions.assertThat(response.body().as(Kanji.class))
             .isNotNull()
-            .isEqualTo(TEST_KANJI);
+            .isEqualTo(expectedKanji);
     }
 
     @Test
     public void GivenAuthenticatedUser_WhenUpdateKanji_ReturnOkAndKanji() throws URISyntaxException {
         kanjiRepository.save(TEST_KANJI);
+        updateKanjiId();
 
         Kanji expectedOutputKanji = TEST_KANJI_2;
-        expectedOutputKanji.setId(1);
+        expectedOutputKanji.setId(kanjiId);
 
         Response response = given().header("Authorization", getKeycloakBearerToken())
                 .when()
                 .contentType("application/json")
                 .body(TEST_KANJI_DTO_2)
-                .put(KANJI_ENDPOINT + "/1");
+                .put(KANJI_ENDPOINT + "/" + kanjiId);
 
         response.then().statusCode(HttpStatus.OK.value());
         Assertions.assertThat(response.body().as(Kanji.class))
@@ -174,16 +178,22 @@ public class MuzukanjiApiIntegrationTests {
     @Test
     public void GivenAuthenticatedUser_WhenDeleteKanji_ReturnOkAndMessage() throws URISyntaxException {
         kanjiRepository.save(TEST_KANJI);
-        String expectedMessage = String.format(KANJI_DELETED_MESSAGE, 1);
+        updateKanjiId();
+        String expectedMessage = String.format(KANJI_DELETED_MESSAGE, kanjiId);
 
         given().header("Authorization", getKeycloakBearerToken())
             .when()
             .contentType("application/json")
-            .delete(KANJI_ENDPOINT + "/1")
+            .delete(KANJI_ENDPOINT + "/" + kanjiId)
             .then()
             .statusCode(HttpStatus.OK.value())
             .body(Matchers.is(expectedMessage));
     }
 
+    private void updateKanjiId() {
+        List<Kanji> kanjiList = kanjiRepository.findAll();
+        if (kanjiList.isEmpty()) throw new RuntimeException("Kanji database is empty");
 
+        kanjiId = kanjiList.get(kanjiList.size() - 1).getId();
+    }
 }
