@@ -30,8 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.baqterya.muzukanji.util.Const.JLPT_ERROR_MESSAGE;
-import static com.baqterya.muzukanji.util.Const.JLPT_REGEX;
+import static com.baqterya.muzukanji.util.Const.*;
 import static org.springframework.hateoas.PagedModel.*;
 
 @RestController
@@ -145,7 +144,7 @@ public class KanjiController {
     public ResponseEntity<String> deleteKanji(
         @PathVariable Integer id
     ) {
-        return new ResponseEntity<>(String.format("Removed Kanji with id %s", id), HttpStatus.OK);
+        return new ResponseEntity<>(String.format(KANJI_DELETED_MESSAGE, id), HttpStatus.OK);
     }
 
 }
