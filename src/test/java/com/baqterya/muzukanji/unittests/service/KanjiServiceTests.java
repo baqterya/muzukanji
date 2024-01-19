@@ -69,7 +69,7 @@ public class KanjiServiceTests {
     @Test
     public void KanjiService_DeleteKanji_ReturnNull() {
         Integer kanjiId = 1;
-        when(kanjiRepository.existsById(kanjiId)).thenReturn(true);
+        when(kanjiRepository.findById(kanjiId)).thenReturn(Optional.ofNullable(TEST_KANJI));
         doNothing().when(kanjiRepository).deleteById(kanjiId);
 
         assertAll(() -> kanjiService.deleteKanji(kanjiId));
