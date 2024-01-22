@@ -73,6 +73,10 @@ public class MuzukanjiApiIntegrationTests {
             "spring.security.oauth2.resourceserver.jwt.issuer-uri",
             () -> keycloak.getAuthServerUrl() + REALM_NAME
         );
+        registry.add(
+            "spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
+            () -> keycloak.getAuthServerUrl() + "/realms/muzukanji/protocol/openid-connect/certs"
+        );
     }
 
     @Autowired
