@@ -36,7 +36,7 @@ import static com.baqterya.muzukanji.util.Const.*;
 import static io.restassured.RestAssured.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MuzukanjiApiIntegrationTests {
+public class KanjiControllerTests {
 
     private static final String POSTGRES_IMAGE = "postgres:alpine";
     private static final  String KEYCLOAK_IMAGE = "quay.io/keycloak/keycloak:23.0.0";
