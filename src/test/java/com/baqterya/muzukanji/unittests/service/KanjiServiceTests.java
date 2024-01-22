@@ -38,7 +38,7 @@ public class KanjiServiceTests {
     private KanjiService kanjiService;
 
     @Test
-    public void KanjiService_CreateKanji_ReturnKanji() {
+    public void GivenKanjiDto_CreateKanji_ReturnKanji() {
         when(kanjiRepository.save(any(Kanji.class))).thenReturn(TEST_KANJI);
 
         Kanji savedKanji = kanjiService.createKanji(TEST_KANJI_DTO);
@@ -46,7 +46,7 @@ public class KanjiServiceTests {
     }
 
     @Test
-    public void KanjiService_GetKanjiById_ReturnKanji() {
+    public void GivenId_GetKanjiById_ReturnKanji() {
         Integer kanjiId = 1;
 
         when(kanjiRepository.findById(kanjiId)).thenReturn(Optional.of(TEST_KANJI));
@@ -56,7 +56,7 @@ public class KanjiServiceTests {
     }
 
     @Test
-    public void KanjiService_UpdateKanji_ReturnKanji() {
+    public void GivenIdAndKanjiDto_UpdateKanji_ReturnKanji() {
         Integer kanjiId = 1;
 
         when(kanjiRepository.findById(kanjiId)).thenReturn(Optional.of(TEST_KANJI));
@@ -67,16 +67,17 @@ public class KanjiServiceTests {
     }
 
     @Test
-    public void KanjiService_DeleteKanji_ReturnNull() {
+    public void GivenId_DeleteKanji() {
         Integer kanjiId = 1;
-        when(kanjiRepository.findById(kanjiId)).thenReturn(Optional.ofNullable(TEST_KANJI));
-        doNothing().when(kanjiRepository).deleteById(kanjiId);
+        when(kanjiRepository.findById(kanjiId)).thenReturn(Optional.of(TEST_KANJI));
 
-        assertAll(() -> kanjiService.deleteKanji(kanjiId));
+        kanjiService.deleteKanji(kanjiId);
+
+        verify(kanjiRepository, times(1)).deleteById(kanjiId);
     }
 
     @Test
-    public void KanjiService_SearchKanji_ReturnKanjiPage() {
+    public void GivenPageableAndSpecification_SearchKanji_ReturnKanjiPage() {
         Page<Kanji> kanjiPage = mock(Page.class);
 
         String[] sort = {"id", "asc"};
