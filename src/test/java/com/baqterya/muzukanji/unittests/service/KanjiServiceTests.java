@@ -6,6 +6,8 @@ import com.baqterya.muzukanji.repository.KanjiRepository;
 import com.baqterya.muzukanji.service.KanjiService;
 import com.baqterya.muzukanji.specification.KanjiSpecification;
 import com.baqterya.muzukanji.util.Util;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,11 +21,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 
+import java.lang.reflect.Executable;
 import java.util.List;
 import java.util.Optional;
 
-import static com.baqterya.muzukanji.util.Const.TEST_KANJI;
-import static com.baqterya.muzukanji.util.Const.TEST_KANJI_DTO;
+import static com.baqterya.muzukanji.util.Const.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.*;
@@ -38,21 +43,21 @@ public class KanjiServiceTests {
     private KanjiService kanjiService;
 
     @Test
-    public void GivenKanjiDto_CreateKanji_ReturnKanji() {
-        when(kanjiRepository.save(any(Kanji.class))).thenReturn(TEST_KANJI);
-
-        Kanji savedKanji = kanjiService.createKanji(TEST_KANJI_DTO);
-        Assertions.assertThat(savedKanji).isNotNull();
-    }
-
-    @Test
     public void GivenId_GetKanjiById_ReturnKanji() {
         Integer kanjiId = 1;
 
         when(kanjiRepository.findById(kanjiId)).thenReturn(Optional.of(TEST_KANJI));
 
         Kanji savedKanji = kanjiService.getKanjiById(kanjiId);
-        Assertions.assertThat(savedKanji).isNotNull();
+        assertThat(savedKanji).isNotNull();
+    }
+
+    @Test
+    public void GivenKanjiDto_CreateKanji_ReturnKanji() {
+        when(kanjiRepository.save(any(Kanji.class))).thenReturn(TEST_KANJI);
+
+        Kanji savedKanji = kanjiService.createKanji(TEST_KANJI_DTO);
+        assertThat(savedKanji).isNotNull();
     }
 
     @Test
@@ -63,7 +68,7 @@ public class KanjiServiceTests {
         when(kanjiRepository.save(TEST_KANJI)).thenReturn(TEST_KANJI);
 
         Kanji updatedKanji = kanjiService.updateKanji(kanjiId, TEST_KANJI_DTO);
-        Assertions.assertThat(updatedKanji).isNotNull();
+        assertThat(updatedKanji).isNotNull();
     }
 
     @Test
@@ -92,6 +97,48 @@ public class KanjiServiceTests {
             null,null,null,null,null,
             null,null,null, pagingSort
         );
-        Assertions.assertThat(returnedKanjiPage).isNotNull();
+        assertThat(returnedKanjiPage).isNotNull();
+    }
+
+    @Test
+    public void GivenIdNotInDatabase_GetKanjiById_ThrowEntityNotFoundException() {
+        Integer kanjiId = 1;
+
+        when(kanjiRepository.findById(kanjiId)).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(EntityNotFoundException.class)
+            .isThrownBy(() -> kanjiService.getKanjiById(kanjiId))
+            .withMessage(KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId);
+    }
+
+    @Test
+    public void GivenExistingKanji_CreateKanji_ThrowEntityExistsException() {
+        when(kanjiRepository.findByKanji(anyString())).thenReturn(Optional.of(TEST_KANJI));
+
+        assertThatExceptionOfType(EntityExistsException.class)
+            .isThrownBy(() -> kanjiService.createKanji(TEST_KANJI_DTO))
+            .withMessage(KANJI_ALREADY_EXISTS_MESSAGE, TEST_KANJI_DTO.getKanji());
+    }
+
+    @Test
+    public void GivenIdNotInDatabase_UpdateKanji_ThrowEntityNotFoundException() {
+        Integer kanjiId = 1;
+
+        when(kanjiRepository.findById(kanjiId)).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(EntityNotFoundException.class)
+            .isThrownBy(() -> kanjiService.updateKanji(kanjiId, TEST_KANJI_DTO))
+            .withMessage(KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId);
+    }
+
+    @Test
+    public void GivenIdNotInDatabase_DeleteKanji_ThrowEntityNotFoundException() {
+        Integer kanjiId = 1;
+
+        when(kanjiRepository.findById(kanjiId)).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(EntityNotFoundException.class)
+            .isThrownBy(() -> kanjiService.deleteKanji(kanjiId))
+            .withMessage(KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId);
     }
 }
