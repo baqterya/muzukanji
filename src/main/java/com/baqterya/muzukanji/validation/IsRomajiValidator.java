@@ -3,6 +3,8 @@ package com.baqterya.muzukanji.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+import java.lang.Character.UnicodeBlock;
+
 public class IsRomajiValidator implements ConstraintValidator<IsRomaji, String> {
     @Override
     public void initialize(IsRomaji constraintAnnotation) {
@@ -20,7 +22,7 @@ public class IsRomajiValidator implements ConstraintValidator<IsRomaji, String> 
     private boolean isRomaji(String input) {
         boolean isRomaji = true;
         for (char c : input.toCharArray()) {
-            if (Character.UnicodeBlock.of(c) != Character.UnicodeBlock.BASIC_LATIN) {
+            if (UnicodeBlock.of(c) != UnicodeBlock.BASIC_LATIN) {
                 isRomaji = false;
                 break;
             }
