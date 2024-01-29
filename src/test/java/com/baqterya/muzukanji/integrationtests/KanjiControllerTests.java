@@ -221,8 +221,39 @@ public class KanjiControllerTests {
             .body(Matchers.is(expectedMessage));
     }
 
+    static Stream<Arguments> generateValidFilterParams() {
+        List<String> params = ImmutableList.of(
+                "kanji:一","meaning:One, One Radical (no.1)",
+                "kunyomi:ひと-, ひと.つ","kunyomiRomaji:hito-, hito.tsu",
+                "onyomi:イチ, イツ","onyomiRomaji:ichi, itsu",
+                "minStrokes:1","maxStrokes:1",
+                "minJlptLevel:N5","maxJlptLevel:N5",
+                "minJyoyoGrade:1","maxJyoyoGrade:1",
+                "minUsage:1","maxUsage:2"
+        );
+
+        Set<String> concatenatedSet = new HashSet<>();
+        Set<Set<String>> resultSet = new HashSet<>();
+
+        for (String param : params) {
+            concatenatedSet.add(param);
+
+            resultSet.add(Set.of(param));
+            resultSet.add(Set.copyOf(concatenatedSet));
+        }
+        Stream<Arguments> resultStream = Stream.of();
+        for (Set<String> combination : resultSet) {
+            if (combination.isEmpty()) continue;
+            resultStream = Stream.concat(
+                    resultStream,
+                    Stream.of(Arguments.of(combination))
+            );
+        }
+        return resultStream;
+    }
+
     @ParameterizedTest
-    @MethodSource("generateValidParams")
+    @MethodSource("generateValidFilterParams")
     void GivenValidFilterParams_WhenGetKanji_ReturnOkAndKanjiPage(Set<String> params) {
         boolean dataSizeIsTwo = false;
         List<String> paramsNotFilteringTheSecondKanji
@@ -247,36 +278,5 @@ public class KanjiControllerTests {
         response.body("data[0].kanji", Matchers.equalTo(TEST_KANJI.getKanji()))
                 .body("data[0].meanings", Matchers.equalTo(TEST_KANJI.getMeanings()));
 
-    }
-
-    static Stream<Arguments> generateValidParams() {
-        List<String> params = ImmutableList.of(
-            "kanji:一","meaning:One, One Radical (no.1)",
-            "kunyomi:ひと-, ひと.つ","kunyomiRomaji:hito-, hito.tsu",
-            "onyomi:イチ, イツ","onyomiRomaji:ichi, itsu",
-            "minStrokes:1","maxStrokes:1",
-            "minJlptLevel:N5","maxJlptLevel:N5",
-            "minJyoyoGrade:1","maxJyoyoGrade:1",
-            "minUsage:1","maxUsage:2"
-        );
-
-        Set<String> concatenatedSet = new HashSet<>();
-        Set<Set<String>> resultSet = new HashSet<>();
-
-        for (String param : params) {
-            concatenatedSet.add(param);
-
-            resultSet.add(Set.of(param));
-            resultSet.add(Set.copyOf(concatenatedSet));
-        }
-        Stream<Arguments> resultStream = Stream.of();
-        for (Set<String> combination : resultSet) {
-            if (combination.isEmpty()) continue;
-            resultStream = Stream.concat(
-                resultStream,
-                Stream.of(Arguments.of(combination))
-            );
-        }
-        return resultStream;
     }
 }
