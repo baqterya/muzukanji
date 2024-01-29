@@ -3,6 +3,8 @@ package com.baqterya.muzukanji.integrationtests;
 
 import com.baqterya.muzukanji.model.Kanji;
 import com.baqterya.muzukanji.repository.KanjiRepository;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import lombok.SneakyThrows;
 import org.apache.http.client.utils.URIBuilder;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
@@ -17,6 +19,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
@@ -31,11 +36,18 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.shaded.com.google.common.collect.ImmutableList;
+import org.testcontainers.shaded.com.google.common.collect.ImmutableSet;
+import org.testcontainers.shaded.com.google.common.collect.Sets;
+import org.testcontainers.shaded.org.apache.commons.lang3.tuple.Pair;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import static com.baqterya.muzukanji.util.Const.*;
 import static io.restassured.RestAssured.*;
@@ -209,9 +221,62 @@ public class KanjiControllerTests {
             .body(Matchers.is(expectedMessage));
     }
 
-//    @ParameterizedTest
-//    @ValueSource()
-    void GivenFilterParams() {
+    @ParameterizedTest
+    @MethodSource("generateValidParams")
+    void GivenValidFilterParams_WhenGetKanji_ReturnOkAndKanjiPage(Set<String> params) {
+        boolean dataSizeIsTwo = false;
+        List<String> paramsNotFilteringTheSecondKanji
+                = List.of("maxJlptLevel:N5", "minUsage:1", "minStrokes:1", "minJyoyoGrade:1","maxJyoyoGrade:1");
 
+        List<Kanji> savedKanji = List.of(TEST_KANJI, TEST_KANJI_2);
+        kanjiRepository.saveAll(savedKanji);
+
+        RequestSpecification result = given();
+        for (String param : params) {
+            if (params.size() == 1 && paramsNotFilteringTheSecondKanji.contains(param)) dataSizeIsTwo = true;
+            String[] parts = param.split(":");
+            result.queryParam(parts[0], parts[1]);
+        }
+
+        ValidatableResponse response = result.when().get(KANJI_ENDPOINT)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("data", Matchers.notNullValue());
+        if (dataSizeIsTwo) response.body("data.size()", Matchers.is(2));
+        else response.body("data.size()", Matchers.is(1));
+        response.body("data[0].kanji", Matchers.equalTo(TEST_KANJI.getKanji()))
+                .body("data[0].meanings", Matchers.equalTo(TEST_KANJI.getMeanings()));
+
+    }
+
+    static Stream<Arguments> generateValidParams() {
+        List<String> params = ImmutableList.of(
+            "kanji:一","meaning:One, One Radical (no.1)",
+            "kunyomi:ひと-, ひと.つ","kunyomiRomaji:hito-, hito.tsu",
+            "onyomi:イチ, イツ","onyomiRomaji:ichi, itsu",
+            "minStrokes:1","maxStrokes:1",
+            "minJlptLevel:N5","maxJlptLevel:N5",
+            "minJyoyoGrade:1","maxJyoyoGrade:1",
+            "minUsage:1","maxUsage:2"
+        );
+
+        Set<String> concatenatedSet = new HashSet<>();
+        Set<Set<String>> resultSet = new HashSet<>();
+
+        for (String param : params) {
+            concatenatedSet.add(param);
+
+            resultSet.add(Set.of(param));
+            resultSet.add(Set.copyOf(concatenatedSet));
+        }
+        Stream<Arguments> resultStream = Stream.of();
+        for (Set<String> combination : resultSet) {
+            if (combination.isEmpty()) continue;
+            resultStream = Stream.concat(
+                resultStream,
+                Stream.of(Arguments.of(combination))
+            );
+        }
+        return resultStream;
     }
 }
