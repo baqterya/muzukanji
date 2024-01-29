@@ -12,6 +12,8 @@ public class Const {
     public static final String JLPT_ERROR_MESSAGE
             = "Invalid JLPT level entered. JLPT level must match (N5|N4|N3|N2|N1|n5|n4|n3|n2|n1)" ;
 
+
+    // TESTING VALUES
     public static final Kanji TEST_KANJI =  Kanji.builder()
             .kanji("一")
             .meanings("One, One Radical (no.1)")
