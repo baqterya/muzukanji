@@ -88,6 +88,13 @@ public class KanjiControllerTests {
         kanjiRepository.deleteAll();
     }
 
+    private void updateKanjiId() {
+        List<Kanji> kanjiList = kanjiRepository.findAll();
+        if (kanjiList.isEmpty()) throw new RuntimeException("Kanji database is empty");
+
+        kanjiId = kanjiList.get(kanjiList.size() - 1).getId();
+    }
+
     protected String getKeycloakBearerToken() throws URISyntaxException {
         URI authorizationURI = new URIBuilder(
                 keycloak.getAuthServerUrl() + "/realms/muzukanji/protocol/openid-connect/token"
@@ -192,12 +199,5 @@ public class KanjiControllerTests {
             .then()
             .statusCode(HttpStatus.OK.value())
             .body(Matchers.is(expectedMessage));
-    }
-
-    private void updateKanjiId() {
-        List<Kanji> kanjiList = kanjiRepository.findAll();
-        if (kanjiList.isEmpty()) throw new RuntimeException("Kanji database is empty");
-
-        kanjiId = kanjiList.get(kanjiList.size() - 1).getId();
     }
 }
