@@ -172,15 +172,15 @@ public class KanjiControllerTests {
     @Test
     public void GivenAuthenticatedUser_WhenCreateKanji_ReturnCreatedAndKanjiDto() throws URISyntaxException {
         Kanji expectedKanji = TEST_KANJI;
-        expectedKanji.setId(kanjiId);
 
         Response response = given().header("Authorization", getKeycloakBearerToken())
             .when()
             .contentType("application/json")
             .body(TEST_KANJI_DTO)
             .post(KANJI_ENDPOINT);
-
         response.then().statusCode(HttpStatus.CREATED.value());
+        updateKanjiId();
+        expectedKanji.setId(kanjiId);
         Assertions.assertThat(response.body().as(Kanji.class))
             .isNotNull()
             .isEqualTo(expectedKanji);
@@ -223,13 +223,13 @@ public class KanjiControllerTests {
 
     static Stream<Arguments> generateValidFilterParams() {
         List<String> params = ImmutableList.of(
-                "kanji:一","meaning:One, One Radical (no.1)",
-                "kunyomi:ひと-, ひと.つ","kunyomiRomaji:hito-, hito.tsu",
-                "onyomi:イチ, イツ","onyomiRomaji:ichi, itsu",
-                "minStrokes:1","maxStrokes:1",
-                "minJlptLevel:N5","maxJlptLevel:N5",
-                "minJyoyoGrade:1","maxJyoyoGrade:1",
-                "minUsage:1","maxUsage:2"
+            "kanji:一","meaning:One, One Radical (no.1)",
+            "kunyomi:ひと-, ひと.つ","kunyomiRomaji:hito-, hito.tsu",
+            "onyomi:イチ, イツ","onyomiRomaji:ichi, itsu",
+            "minStrokes:1","maxStrokes:1",
+            "minJlptLevel:N5","maxJlptLevel:N5",
+            "minJyoyoGrade:1","maxJyoyoGrade:1",
+            "minUsage:1","maxUsage:2"
         );
 
         Set<String> concatenatedSet = new HashSet<>();
