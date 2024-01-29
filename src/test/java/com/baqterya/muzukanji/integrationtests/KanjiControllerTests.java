@@ -13,6 +13,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -139,13 +141,14 @@ public class KanjiControllerTests {
     }
 
     @Test
-    public void WhenGetKanji_ReturnOkAndKanjiPage() {
+    public void WhenGetKanji_ReturnOkAndNotNull() {
         List<Kanji> savedKanji = List.of(TEST_KANJI, TEST_KANJI_2);
         kanjiRepository.saveAll(savedKanji);
 
         when().get(KANJI_ENDPOINT)
             .then()
             .statusCode(HttpStatus.OK.value())
+            .body("data", Matchers.notNullValue())
             .body("data.size()", Matchers.is(savedKanji.size()));
     }
 
@@ -200,4 +203,8 @@ public class KanjiControllerTests {
             .statusCode(HttpStatus.OK.value())
             .body(Matchers.is(expectedMessage));
     }
+
+//    @ParameterizedTest
+//    @ValueSource()
+    void GivenFilterParams(){}
 }
