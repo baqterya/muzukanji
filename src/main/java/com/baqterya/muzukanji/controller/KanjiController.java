@@ -6,6 +6,7 @@ import com.baqterya.muzukanji.model.KanjiModel;
 import com.baqterya.muzukanji.model.KanjiModelAssembler;
 import com.baqterya.muzukanji.service.KanjiService;
 import com.baqterya.muzukanji.util.Util;
+import com.baqterya.muzukanji.validation.IsRomaji;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
@@ -53,9 +54,9 @@ public class KanjiController {
         @RequestParam(required = false) String kanji,
         @RequestParam(required = false) String meaning,
         @RequestParam(required = false) String kunyomi,
-        @RequestParam(required = false) String kunyomiRomaji,
+        @RequestParam(required = false) @IsRomaji String kunyomiRomaji,
         @RequestParam(required = false) String onyomi,
-        @RequestParam(required = false) String onyomiRomaji,
+        @RequestParam(required = false) @IsRomaji String onyomiRomaji,
         @RequestParam(required = false) @Min(1) @Max(34) Integer minStrokes,
         @RequestParam(required = false) @Min(1) @Max(34) Integer maxStrokes,
         @RequestParam(required = false) @Pattern(regexp = JLPT_REGEX, message = JLPT_ERROR_MESSAGE)
