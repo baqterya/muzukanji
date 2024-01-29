@@ -67,11 +67,10 @@ public class KanjiController {
         @RequestParam(required = false) @Min(1) @Max(2501) Integer minUsage,
         @RequestParam(required = false) @Min(1) @Max(2501) Integer maxUsage,
         @RequestParam(defaultValue = "0") Integer page,
-        @RequestParam(defaultValue = "50") Integer size,
-        @RequestParam(defaultValue = "id,asc") String[] sort
+        @RequestParam(defaultValue = "50") Integer size
     ) {
         try {
-            List<Order> orders = Util.getSortingOrder(sort);
+            List<Order> orders = Util.getSortingOrder(new String[]{"id,asc"});
 
             Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
 
