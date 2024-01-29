@@ -6,6 +6,7 @@ import com.baqterya.muzukanji.model.KanjiModel;
 import com.baqterya.muzukanji.model.KanjiModelAssembler;
 import com.baqterya.muzukanji.service.KanjiService;
 import com.baqterya.muzukanji.util.Util;
+import com.baqterya.muzukanji.validation.IsJapanese;
 import com.baqterya.muzukanji.validation.IsRomaji;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -51,11 +52,11 @@ public class KanjiController {
     @GetMapping()
     @PreAuthorize("permitAll")
     public ResponseEntity<Map<String, Object>> getKanji(
-        @RequestParam(required = false) String kanji,
+        @RequestParam(required = false) @IsJapanese String kanji,
         @RequestParam(required = false) String meaning,
-        @RequestParam(required = false) String kunyomi,
+        @RequestParam(required = false) @IsJapanese String kunyomi,
         @RequestParam(required = false) @IsRomaji String kunyomiRomaji,
-        @RequestParam(required = false) String onyomi,
+        @RequestParam(required = false) @IsJapanese String onyomi,
         @RequestParam(required = false) @IsRomaji String onyomiRomaji,
         @RequestParam(required = false) @Min(1) @Max(34) Integer minStrokes,
         @RequestParam(required = false) @Min(1) @Max(34) Integer maxStrokes,
