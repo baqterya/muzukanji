@@ -21,7 +21,8 @@ public class IsJapaneseValidator implements ConstraintValidator<IsJapanese, Stri
 
     private boolean IsJapanese(String input) {
         boolean isJapanese = true;
-        for (char c : input.toCharArray()) {
+        String inputWithoutPunctuation = input.replaceAll("\\p{P}", "");
+        for (char c : inputWithoutPunctuation.toCharArray()) {
             UnicodeBlock block = (UnicodeBlock.of(c));
             if (
                 block != UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
@@ -29,6 +30,7 @@ public class IsJapaneseValidator implements ConstraintValidator<IsJapanese, Stri
                 && block != UnicodeBlock.KATAKANA
                 && block != UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
                 && block != UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+                && c != ' '
             ) {
                 isJapanese = false;
                 break;
