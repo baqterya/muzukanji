@@ -3,12 +3,15 @@ package com.baqterya.muzukanji.integrationtests;
 
 import com.baqterya.muzukanji.model.Kanji;
 import com.baqterya.muzukanji.repository.KanjiRepository;
+import lombok.SneakyThrows;
 import org.apache.http.client.utils.URIBuilder;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -141,7 +144,7 @@ public class KanjiControllerTests {
     }
 
     @Test
-    public void WhenGetKanji_ReturnOkAndNotNull() {
+    public void WhenGetKanji_ReturnOkAndJsonPage() {
         List<Kanji> savedKanji = List.of(TEST_KANJI, TEST_KANJI_2);
         kanjiRepository.saveAll(savedKanji);
 
@@ -149,7 +152,9 @@ public class KanjiControllerTests {
             .then()
             .statusCode(HttpStatus.OK.value())
             .body("data", Matchers.notNullValue())
-            .body("data.size()", Matchers.is(savedKanji.size()));
+            .body("data.size()", Matchers.is(savedKanji.size()))
+            .body("data[0].kanji", Matchers.equalTo(TEST_KANJI.getKanji()))
+            .body("data[0].meanings", Matchers.equalTo(TEST_KANJI.getMeanings()));
     }
 
     @Test
@@ -178,10 +183,10 @@ public class KanjiControllerTests {
         expectedOutputKanji.setId(kanjiId);
 
         Response response = given().header("Authorization", getKeycloakBearerToken())
-                .when()
-                .contentType("application/json")
-                .body(TEST_KANJI_DTO_2)
-                .put(KANJI_ENDPOINT + "/" + kanjiId);
+            .when()
+            .contentType("application/json")
+            .body(TEST_KANJI_DTO_2)
+            .put(KANJI_ENDPOINT + "/" + kanjiId);
 
         response.then().statusCode(HttpStatus.OK.value());
         Assertions.assertThat(response.body().as(Kanji.class))
@@ -206,5 +211,7 @@ public class KanjiControllerTests {
 
 //    @ParameterizedTest
 //    @ValueSource()
-    void GivenFilterParams(){}
+    void GivenFilterParams() {
+
+    }
 }
