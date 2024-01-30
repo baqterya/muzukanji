@@ -214,6 +214,12 @@ public class KanjiControllerTests {
             .body(Matchers.is(expectedMessage));
     }
 
+    @Test
+    public void WhenGetById_NotInDatabase_ReturnNoContent() {
+        when().get(KANJI_ENDPOINT + "/" + kanjiId)
+            .then().statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
     static Stream<Arguments> generateValidFilterParams() {
         List<String> params = ImmutableList.of(
             "kanji:一","meaning:One, One Radical (no.1)",
@@ -353,4 +359,6 @@ public class KanjiControllerTests {
             .then()
             .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
+
+
 }
