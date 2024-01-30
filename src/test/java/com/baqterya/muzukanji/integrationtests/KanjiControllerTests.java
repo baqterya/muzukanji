@@ -2,6 +2,7 @@ package com.baqterya.muzukanji.integrationtests;
 
 
 import com.baqterya.muzukanji.model.Kanji;
+import com.baqterya.muzukanji.model.KanjiDto;
 import com.baqterya.muzukanji.repository.KanjiRepository;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
@@ -11,6 +12,8 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,10 +40,7 @@ import org.testcontainers.shaded.com.google.common.collect.ImmutableList;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.baqterya.muzukanji.util.Const.*;
@@ -213,6 +213,9 @@ public class KanjiControllerTests {
             .then()
             .statusCode(HttpStatus.OK.value())
             .body(Matchers.is(expectedMessage));
+
+        Optional<Kanji> removedKanji = kanjiRepository.findById(kanjiId);
+        Assertions.assertThat(removedKanji).isEmpty();
     }
 
     @Test
@@ -400,5 +403,43 @@ public class KanjiControllerTests {
             .put(KANJI_ENDPOINT + "/" + 1)
             .then()
             .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    static Stream<Arguments> generateInvalidPayload() {
+        return Stream.of(
+            Arguments.of(KanjiDto.builder().build()),
+            Arguments.of(KanjiDto.builder().kanji("aaa").build()),
+            Arguments.of(KanjiDto.builder().kanji("力").kunyomi("aaa").build()),
+            Arguments.of(KanjiDto.builder().kanji("力").kunyomiRomaji("あああ").build()),
+            Arguments.of(KanjiDto.builder().kanji("力").onyomi("aaa").build()),
+            Arguments.of(KanjiDto.builder().kanji("力").onyomiRomaji("あああ").build()),
+            Arguments.of(KanjiDto.builder().kanji("力").jlptLevel("aaa").build())
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateInvalidPayload")
+    public void GivenAuthenticatedUser_InvalidPayload_WhenCreateKanji_ReturnBadRequest(KanjiDto invalidPayload) throws URISyntaxException {
+        given().header("Authorization", getKeycloakBearerToken())
+            .when()
+            .contentType("application/json")
+            .body(invalidPayload)
+            .post(KANJI_ENDPOINT)
+            .then().statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    public void GivenAuthenticatedUser_InvalidPayloadType_WhenCreateKanji_ReturnBadRequest() throws URISyntaxException, JSONException {
+        JSONObject invalidPayload = new JSONObject();
+        invalidPayload.put("?field1", "value1");
+        invalidPayload.put("!field2", "value2");
+        invalidPayload.put("#field3", "value3");
+
+        given().header("Authorization", getKeycloakBearerToken())
+                .when()
+                .contentType("application/json")
+                .body(invalidPayload.toString())
+                .post(KANJI_ENDPOINT)
+                .then().statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }
