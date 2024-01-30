@@ -322,5 +322,35 @@ public class KanjiControllerTests {
             .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
+    @Test
+    public void GivenUnauthenticatedUser_WhenCreateKanji_ReturnUnauthorised() {
+        given().header("Authorization", "123123123")
+            .when()
+            .contentType("application/json")
+            .body(TEST_KANJI_DTO)
+            .post(KANJI_ENDPOINT)
+            .then()
+            .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
 
+    @Test
+    public void GivenUnauthenticatedUser_WhenUpdateKanji_ReturnUnauthorised() {
+        given().header("Authorization", "123123123")
+            .when()
+            .contentType("application/json")
+            .body(TEST_KANJI_DTO)
+            .put(KANJI_ENDPOINT + "/" + 1)
+            .then()
+            .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @Test
+    public void GivenUnauthenticatedUser_WhenDeleteKanji_ReturnUnauthorised() {
+        given().header("Authorization", "123123123")
+            .when()
+            .contentType("application/json")
+            .delete(KANJI_ENDPOINT + "/" + 1)
+            .then()
+            .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
 }
