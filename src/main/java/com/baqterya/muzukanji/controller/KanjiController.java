@@ -7,6 +7,7 @@ import com.baqterya.muzukanji.model.KanjiModelAssembler;
 import com.baqterya.muzukanji.service.KanjiService;
 import com.baqterya.muzukanji.util.Util;
 import com.baqterya.muzukanji.validation.IsJapanese;
+import com.baqterya.muzukanji.validation.IsKanji;
 import com.baqterya.muzukanji.validation.IsRomaji;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -125,7 +126,7 @@ public class KanjiController {
     @PostMapping()
     @PreAuthorize("hasRole('client_admin')")
     public ResponseEntity<Kanji> createKanji(
-        @RequestBody KanjiDto newKanjiDto
+        @RequestBody @IsKanji KanjiDto newKanjiDto
     ) {
         return new ResponseEntity<>(kanjiService.createKanji(newKanjiDto), HttpStatus.CREATED);
     }
@@ -134,7 +135,7 @@ public class KanjiController {
     @PreAuthorize("hasRole('client_admin')")
     public ResponseEntity<Kanji> updateKanji(
         @PathVariable @Min(1) Integer kanjiId,
-        @RequestBody KanjiDto updatedKanjiDto
+        @RequestBody @IsKanji KanjiDto updatedKanjiDto
     ) {
         return new ResponseEntity<>(kanjiService.updateKanji(kanjiId, updatedKanjiDto), HttpStatus.OK);
     }
