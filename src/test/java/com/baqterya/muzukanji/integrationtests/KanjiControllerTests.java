@@ -367,4 +367,38 @@ public class KanjiControllerTests {
             .then()
             .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
+
+    @Test
+    public void GivenAuthenticatedUser_WhenCreateKanji_AlreadyExists_ReturnConflict() throws URISyntaxException {
+        kanjiRepository.save(TEST_KANJI);
+
+        given().header("Authorization", getKeycloakBearerToken())
+            .when()
+            .contentType("application/json")
+            .body(TEST_KANJI_DTO)
+            .post(KANJI_ENDPOINT)
+            .then()
+            .statusCode(HttpStatus.CONFLICT.value());
+    }
+
+    @Test
+    public void GivenAuthenticatedUser_WhenUpdateKanji_NotInDatabase_ReturnNotFound() throws URISyntaxException {
+        given().header("Authorization", getKeycloakBearerToken())
+            .when()
+            .contentType("application/json")
+            .delete(KANJI_ENDPOINT + "/" + 1)
+            .then()
+            .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    public void GivenAuthenticatedUser_WhenDeleteKanji_NotInDatabase_ReturnNotFound() throws URISyntaxException {
+        given().header("Authorization", getKeycloakBearerToken())
+            .when()
+            .contentType("application/json")
+            .body(TEST_KANJI_DTO)
+            .put(KANJI_ENDPOINT + "/" + 1)
+            .then()
+            .statusCode(HttpStatus.NOT_FOUND.value());
+    }
 }
