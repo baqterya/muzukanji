@@ -5,15 +5,12 @@ import com.baqterya.muzukanji.model.Kanji;
 import com.baqterya.muzukanji.repository.KanjiRepository;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
-import lombok.SneakyThrows;
 import org.apache.http.client.utils.URIBuilder;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +19,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,9 +33,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.shaded.com.google.common.collect.ImmutableList;
-import org.testcontainers.shaded.com.google.common.collect.ImmutableSet;
-import org.testcontainers.shaded.com.google.common.collect.Sets;
-import org.testcontainers.shaded.org.apache.commons.lang3.tuple.Pair;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -202,8 +195,8 @@ public class KanjiControllerTests {
 
         response.then().statusCode(HttpStatus.OK.value());
         Assertions.assertThat(response.body().as(Kanji.class))
-                .isNotNull()
-                .isEqualTo(expectedOutputKanji);
+            .isNotNull()
+            .isEqualTo(expectedOutputKanji);
     }
 
     @Test
@@ -245,8 +238,8 @@ public class KanjiControllerTests {
         for (Set<String> combination : resultSet) {
             if (combination.isEmpty()) continue;
             resultStream = Stream.concat(
-                    resultStream,
-                    Stream.of(Arguments.of(combination))
+                resultStream,
+                Stream.of(Arguments.of(combination))
             );
         }
         return resultStream;
@@ -270,13 +263,64 @@ public class KanjiControllerTests {
         }
 
         ValidatableResponse response = result.when().get(KANJI_ENDPOINT)
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("data", Matchers.notNullValue());
+            .then()
+            .statusCode(HttpStatus.OK.value())
+            .body("data", Matchers.notNullValue());
         if (dataSizeIsTwo) response.body("data.size()", Matchers.is(2));
         else response.body("data.size()", Matchers.is(1));
         response.body("data[0].kanji", Matchers.equalTo(TEST_KANJI.getKanji()))
-                .body("data[0].meanings", Matchers.equalTo(TEST_KANJI.getMeanings()));
+            .body("data[0].meanings", Matchers.equalTo(TEST_KANJI.getMeanings()));
 
     }
+
+    @ParameterizedTest
+    @CsvSource(
+        value = {
+            "kanji:aaa",
+            "minJlptLevel:aaa","maxJlptLevel:aaa",
+            "kunyomi:aaa","kunyomiRomaji:あああ","onyomi:aaa","onyomiRomaji:あああ",
+            "minStrokes:-1","minStrokes:35","minStrokes:aaa",
+            "maxStrokes:-1","maxStrokes:35","maxStrokes:aaa",
+            "minJyoyoGrade:-1","minJyoyoGrade:35","minJyoyoGrade:aaa",
+            "maxJyoyoGrade:-1","maxJyoyoGrade:35","maxJyoyoGrade:aaa",
+            "minUsage:-1","minUsage:3500","minUsage:aaa",
+            "maxUsage:-1","maxUsage:3500","maxUsage:aaa"
+        },
+        delimiter = ':'
+    )
+    void GivenInvalidParams_WhenGetKanji_ReturnBadRequest(String param, String paramValue) {
+        List<Kanji> savedKanji = List.of(TEST_KANJI, TEST_KANJI_2);
+        kanjiRepository.saveAll(savedKanji);
+        given().queryParam(param, paramValue)
+            .when()
+            .get(KANJI_ENDPOINT)
+            .then()
+            .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        value = {
+            "kanji:一","meaning:aaaa",
+            "kunyomi:あああ","kunyomiRomaji:hito-, hito.tsu",
+            "onyomi:あああ","onyomiRomaji:ichi, itsu",
+            "minStrokes:8","maxStrokes:1",
+            "minJlptLevel:N5","maxJlptLevel:N1",
+            "minJyoyoGrade:4","maxJyoyoGrade:1",
+            "minUsage:100","maxUsage:1"
+        },
+        delimiter = ':'
+    )
+    void GivenValidParams_WhenGetKanji_NotInDatabase_ReturnNoContent(String param, String paramValue) {
+        TEST_KANJI_2.setJyoyoGradeTaught(2);
+        kanjiRepository.save(TEST_KANJI_2);
+
+        given().queryParam(param, paramValue)
+            .when()
+            .get(KANJI_ENDPOINT)
+            .then()
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+
 }
