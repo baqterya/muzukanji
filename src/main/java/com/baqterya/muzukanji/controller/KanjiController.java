@@ -147,6 +147,7 @@ public class KanjiController {
     public ResponseEntity<String> deleteKanji(
         @PathVariable @Min(1) Integer id
     ) {
+        kanjiService.deleteKanji(id);
         return new ResponseEntity<>(String.format(KANJI_DELETED_MESSAGE, id), HttpStatus.OK);
     }
 
