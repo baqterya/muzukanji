@@ -247,7 +247,7 @@ public class KanjiControllerTests {
 
     @ParameterizedTest
     @MethodSource("generateValidFilterParams")
-    void GivenValidFilterParams_WhenGetKanji_ReturnOkAndKanjiPage(Set<String> params) {
+    public void GivenValidFilterParams_WhenGetKanji_ReturnOkAndKanjiPage(Set<String> params) {
         boolean dataSizeIsTwo = false;
         List<String> paramsNotFilteringTheSecondKanji
                 = List.of("maxJlptLevel:N5", "minUsage:1", "minStrokes:1", "minJyoyoGrade:1","maxJyoyoGrade:1");
@@ -288,7 +288,7 @@ public class KanjiControllerTests {
         },
         delimiter = ':'
     )
-    void GivenInvalidParams_WhenGetKanji_ReturnBadRequest(String param, String paramValue) {
+    public void GivenInvalidParams_WhenGetKanji_ReturnBadRequest(String param, String paramValue) {
         List<Kanji> savedKanji = List.of(TEST_KANJI, TEST_KANJI_2);
         kanjiRepository.saveAll(savedKanji);
         given().queryParam(param, paramValue)
@@ -311,7 +311,7 @@ public class KanjiControllerTests {
         },
         delimiter = ':'
     )
-    void GivenValidParams_WhenGetKanji_NotInDatabase_ReturnNoContent(String param, String paramValue) {
+    public void GivenValidParams_WhenGetKanji_NotInDatabase_ReturnNoContent(String param, String paramValue) {
         TEST_KANJI_2.setJyoyoGradeTaught(2);
         kanjiRepository.save(TEST_KANJI_2);
 
