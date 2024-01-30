@@ -133,7 +133,7 @@ public class KanjiController {
     @PutMapping("/{kanjiId}")
     @PreAuthorize("hasRole('client_admin')")
     public ResponseEntity<Kanji> updateKanji(
-        @PathVariable Integer kanjiId,
+        @PathVariable @Min(1) Integer kanjiId,
         @RequestBody KanjiDto updatedKanjiDto
     ) {
         return new ResponseEntity<>(kanjiService.updateKanji(kanjiId, updatedKanjiDto), HttpStatus.OK);
@@ -143,7 +143,7 @@ public class KanjiController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('client_admin')")
     public ResponseEntity<String> deleteKanji(
-        @PathVariable Integer id
+        @PathVariable @Min(1) Integer id
     ) {
         return new ResponseEntity<>(String.format(KANJI_DELETED_MESSAGE, id), HttpStatus.OK);
     }
