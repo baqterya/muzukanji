@@ -19,6 +19,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -215,9 +216,16 @@ public class KanjiControllerTests {
     }
 
     @Test
-    public void WhenGetById_NotInDatabase_ReturnNoContent() {
+    public void WhenGetById_NotInDatabase_ReturnNotFound() {
         when().get(KANJI_ENDPOINT + "/" + kanjiId)
             .then().statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"aaa", "-1", "0"})
+    public void GivenInvalidId_WhenGetById_ReturnBadRequest(String invalidId) {
+        when().get(KANJI_ENDPOINT + "/" + invalidId)
+                .then().statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     static Stream<Arguments> generateValidFilterParams() {
@@ -359,6 +367,4 @@ public class KanjiControllerTests {
             .then()
             .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
-
-
 }
