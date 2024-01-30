@@ -73,7 +73,7 @@ public class KanjiService {
             return kanjiById.get();
         }
         throw new EntityNotFoundException(String.format(
-                KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId
+            KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId
         ));
     }
 
@@ -92,9 +92,9 @@ public class KanjiService {
 
     public Kanji updateKanji(Integer kanjiId, KanjiDto updatedKanjiDto) {
         Kanji kanjiToUpdate = kanjiRepository.findById(kanjiId)
-                .orElseThrow(
-                        () -> new EntityNotFoundException(String.format(KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId))
-                );
+            .orElseThrow(
+                    () -> new EntityNotFoundException(String.format(KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId))
+            );
         kanjiMapper.updateKanjiFromDto(updatedKanjiDto, kanjiToUpdate);
         kanjiRepository.save(kanjiToUpdate);
         return kanjiToUpdate;
@@ -102,12 +102,12 @@ public class KanjiService {
 
     public void deleteKanji(Integer kanjiId) {
         kanjiRepository.findById(kanjiId).ifPresentOrElse(
-                foundKanji -> kanjiRepository.deleteById(kanjiId),
-                () -> {
-                    throw new EntityNotFoundException(String.format(
-                            KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId
-                    ));
-                }
+            foundKanji -> kanjiRepository.deleteById(kanjiId),
+            () -> {
+                throw new EntityNotFoundException(String.format(
+                        KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId
+                ));
+            }
         );
     }
 }
