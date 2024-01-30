@@ -114,7 +114,7 @@ public class KanjiController {
     @GetMapping("/{kanjiId}")
     @PreAuthorize("permitAll")
     public Kanji getKanjiById(
-        @PathVariable Integer kanjiId
+        @PathVariable @Min(1) Integer kanjiId
     ) {
         return kanjiService.getKanjiById(kanjiId);
     }
