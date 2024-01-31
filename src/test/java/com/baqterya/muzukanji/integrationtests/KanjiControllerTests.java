@@ -501,11 +501,4 @@ public class KanjiControllerTests {
             .then()
             .statusCode(HttpStatus.BAD_REQUEST.value());
     }
-
-//    @Test
-//    public void GivenStoppedDatabase_WhenGetKanji_ReturnInternalServerError() {
-//        postgres.stop();
-//        when().get(KANJI_ENDPOINT)
-//            .then().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-//    }
 }
