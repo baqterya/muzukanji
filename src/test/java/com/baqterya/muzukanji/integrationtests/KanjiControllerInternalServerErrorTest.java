@@ -29,18 +29,9 @@ public class KanjiControllerInternalServerErrorTest {
         postgres.start();
     }
 
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
-    @Autowired
-    KanjiRepository kanjiRepository;
-
     @BeforeEach
     void setUp() {
         RestAssured.baseURI = "http://localhost:" + port;
-        kanjiRepository.deleteAll();
     }
 
     @DynamicPropertySource
@@ -56,4 +47,5 @@ public class KanjiControllerInternalServerErrorTest {
         when().get(KANJI_ENDPOINT)
             .then().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
+
 }

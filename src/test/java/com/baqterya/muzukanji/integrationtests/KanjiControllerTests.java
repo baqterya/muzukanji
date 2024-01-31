@@ -75,6 +75,15 @@ public class KanjiControllerTests {
         keycloak.stop();
     }
 
+    @Autowired
+    KanjiRepository kanjiRepository;
+
+    @BeforeEach
+    void setUp() {
+        RestAssured.baseURI = "http://localhost:" + port;
+        kanjiRepository.deleteAll();
+    }
+
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
@@ -88,15 +97,6 @@ public class KanjiControllerTests {
             "spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
             () -> keycloak.getAuthServerUrl() + "/realms/muzukanji/protocol/openid-connect/certs"
         );
-    }
-
-    @Autowired
-    KanjiRepository kanjiRepository;
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.baseURI = "http://localhost:" + port;
-        kanjiRepository.deleteAll();
     }
 
     private void updateKanjiId() {
@@ -501,4 +501,5 @@ public class KanjiControllerTests {
             .then()
             .statusCode(HttpStatus.BAD_REQUEST.value());
     }
+
 }

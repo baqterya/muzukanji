@@ -141,4 +141,5 @@ public class KanjiServiceTests {
             .isThrownBy(() -> kanjiService.deleteKanji(kanjiId))
             .withMessage(KANJI_NOT_FOUND_BY_ID_MESSAGE, kanjiId);
     }
+
 }

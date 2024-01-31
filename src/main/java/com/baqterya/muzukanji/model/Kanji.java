@@ -21,13 +21,13 @@ public class Kanji {
 
     @Id
     @SequenceGenerator(
-            name = "kanji_sequence",
-            sequenceName = "kanji_sequence",
-            allocationSize = 1
+        name = "kanji_sequence",
+        sequenceName = "kanji_sequence",
+        allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "kanji_sequence"
+        strategy = GenerationType.SEQUENCE,
+        generator = "kanji_sequence"
     )
     @Column(columnDefinition = "serial")
     private Integer id;
@@ -43,16 +43,16 @@ public class Kanji {
     private Integer mostUsedInNewspapers;
 
     public Kanji(
-            String kanji,
-            String meanings,
-            String kunyomi,
-            String kunyomiRomaji,
-            String onyomi,
-            String onyomiRomaji,
-            Integer strokes,
-            String jlptLevel,
-            Integer jyoyoGradeTaught,
-            Integer mostUsedInNewspapers
+        String kanji,
+        String meanings,
+        String kunyomi,
+        String kunyomiRomaji,
+        String onyomi,
+        String onyomiRomaji,
+        Integer strokes,
+        String jlptLevel,
+        Integer jyoyoGradeTaught,
+        Integer mostUsedInNewspapers
     ) {
         this.kanji = kanji;
         this.meanings = meanings;
@@ -65,4 +65,5 @@ public class Kanji {
         this.jyoyoGradeTaught = jyoyoGradeTaught;
         this.mostUsedInNewspapers = mostUsedInNewspapers;
     }
+
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class ApiError {
+
     private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private final LocalDateTime timestamp;
@@ -23,4 +24,5 @@ public class ApiError {
         this();
         this.status = status;
     }
+
 }

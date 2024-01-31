@@ -17,4 +17,5 @@ public class KanjiNotNullValidator implements ConstraintValidator<KanjiNotNull, 
     public boolean isValid(KanjiDto value, ConstraintValidatorContext context) {
         return value.getKanji() != null;
     }
+
 }

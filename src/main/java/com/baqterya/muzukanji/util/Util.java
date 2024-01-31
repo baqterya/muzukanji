@@ -39,12 +39,12 @@ public final class Util {
         for (char c : inputWithoutPunctuation.toCharArray()) {
             Character.UnicodeBlock block = (Character.UnicodeBlock.of(c));
             if (
-                    block != Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
-                            && block != Character.UnicodeBlock.HIRAGANA
-                            && block != Character.UnicodeBlock.KATAKANA
-                            && block != Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
-                            && block != Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
-                            && c != ' '
+                block != Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+                && block != Character.UnicodeBlock.HIRAGANA
+                && block != Character.UnicodeBlock.KATAKANA
+                && block != Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
+                && block != Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+                && c != ' '
             ) {
                 isJapanese = false;
                 break;

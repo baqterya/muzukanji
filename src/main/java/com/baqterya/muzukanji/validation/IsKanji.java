@@ -12,7 +12,9 @@ import static java.lang.annotation.ElementType.*;
 @Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE, TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IsKanji {
+
     String message() default "The data in the payload is not a valid kanji.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
 }

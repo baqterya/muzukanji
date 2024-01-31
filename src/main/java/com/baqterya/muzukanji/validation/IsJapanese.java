@@ -15,9 +15,9 @@ import static java.lang.annotation.ElementType.*;
 @Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE, TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IsJapanese {
+
     String message() default "This parameter requires Japanese Characters.";
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
+
 }

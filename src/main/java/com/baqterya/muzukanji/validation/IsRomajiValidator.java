@@ -8,6 +8,7 @@ import java.lang.Character.UnicodeBlock;
 import static com.baqterya.muzukanji.util.Util.isRomaji;
 
 public class IsRomajiValidator implements ConstraintValidator<IsRomaji, String> {
+
     @Override
     public void initialize(IsRomaji constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
@@ -20,4 +21,5 @@ public class IsRomajiValidator implements ConstraintValidator<IsRomaji, String> 
         }
         return isRomaji(paramInput);
     }
+
 }

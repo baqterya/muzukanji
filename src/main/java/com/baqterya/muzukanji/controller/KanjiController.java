@@ -50,7 +50,6 @@ public class KanjiController {
 
     // OPEN ENDPOINTS
 
-
     @GetMapping()
     @PreAuthorize("permitAll")
     public ResponseEntity<Map<String, Object>> getKanji(
@@ -79,8 +78,8 @@ public class KanjiController {
             Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
 
             Page<Kanji> kanjiPage = kanjiService.searchKanji(
-                    kanji, meaning, kunyomi, kunyomiRomaji, onyomi, onyomiRomaji, minStrokes, maxStrokes,
-                    minJlptLevel, maxJlptLevel, minJyoyoGrade, maxJyoyoGrade, minUsage, maxUsage, pagingSort
+                kanji, meaning, kunyomi, kunyomiRomaji, onyomi, onyomiRomaji, minStrokes, maxStrokes,
+                minJlptLevel, maxJlptLevel, minJyoyoGrade, maxJyoyoGrade, minUsage, maxUsage, pagingSort
             );
             PagedModel<KanjiModel> kanjiPagedModel = pagedResourcesAssembler.toModel(kanjiPage, kanjiModelAssembler);
 

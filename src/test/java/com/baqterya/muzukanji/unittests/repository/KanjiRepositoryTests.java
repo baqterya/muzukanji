@@ -109,4 +109,5 @@ public class KanjiRepositoryTests {
         Optional<Kanji> emptyKanji = kanjiRepository.findById(1);
         Assertions.assertThat(emptyKanji).isEmpty();
     }
+
 }

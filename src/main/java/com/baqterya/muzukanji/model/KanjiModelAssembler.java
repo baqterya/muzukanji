@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class KanjiModelAssembler extends RepresentationModelAssemblerSupport<Kanji, KanjiModel> {
+
     public KanjiModelAssembler() {
         super(KanjiController.class, KanjiModel.class);
     }
@@ -20,4 +21,5 @@ public class KanjiModelAssembler extends RepresentationModelAssemblerSupport<Kan
         BeanUtils.copyProperties(entity, kanjiModel);
         return kanjiModel;
     }
+
 }

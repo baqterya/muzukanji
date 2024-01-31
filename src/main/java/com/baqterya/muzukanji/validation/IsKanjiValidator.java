@@ -37,4 +37,5 @@ public class IsKanjiValidator implements ConstraintValidator<IsKanji, KanjiDto> 
         if (!firstChar.equals('n') && !firstChar.equals('N')) return false;
         return secondChar >= 1 && secondChar <= 5;
     }
+
 }

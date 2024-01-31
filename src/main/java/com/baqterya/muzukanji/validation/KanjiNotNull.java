@@ -15,9 +15,9 @@ import static java.lang.annotation.ElementType.*;
 @Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE, TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface KanjiNotNull {
+
     String message() default "Kanji cannot be null.";
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
+
 }

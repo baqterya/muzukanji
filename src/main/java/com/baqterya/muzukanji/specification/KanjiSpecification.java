@@ -39,8 +39,8 @@ public class KanjiSpecification implements Specification<Kanji> {
             @NonNull CriteriaBuilder criteriaBuilder
     ) {
         Predicate kanjiPredicate = ofNullable(kanji)
-                .map(k -> criteriaBuilder.equal(root.get("kanji"), kanji))
-                .orElse(null);
+            .map(k -> criteriaBuilder.equal(root.get("kanji"), kanji))
+            .orElse(null);
         
         Predicate meaningPredicate = searchPredicate(criteriaBuilder, root.get("meanings"), meaning);
         Predicate kunyomiPredicate = searchPredicate(criteriaBuilder, root.get("kunyomi"), kunyomi);
@@ -86,7 +86,7 @@ public class KanjiSpecification implements Specification<Kanji> {
     private Predicate searchPredicate(CriteriaBuilder criteriaBuilder, Path<String> field, String searchField) {
         if (isNotBlank(searchField)) {
             return criteriaBuilder.like(
-                    criteriaBuilder.lower(field), "%" + searchField.toLowerCase() + "%"
+                criteriaBuilder.lower(field), "%" + searchField.toLowerCase() + "%"
             );
         } else {
             return null;
@@ -95,31 +95,31 @@ public class KanjiSpecification implements Specification<Kanji> {
 
     private Predicate minPredicate(CriteriaBuilder criteriaBuilder, Path<Integer> field, Integer searchField) {
         return ofNullable(searchField)
-                .map(sf -> criteriaBuilder.greaterThanOrEqualTo(field, searchField))
-                .orElse(null);
+            .map(sf -> criteriaBuilder.greaterThanOrEqualTo(field, searchField))
+            .orElse(null);
     }
 
     private Predicate maxPredicate(CriteriaBuilder criteriaBuilder, Path<Integer> field, Integer searchField) {
         return ofNullable(searchField)
-                .map(sf -> criteriaBuilder.lessThanOrEqualTo(field, searchField))
-                .orElse(null);
+            .map(sf -> criteriaBuilder.lessThanOrEqualTo(field, searchField))
+            .orElse(null);
     }
 
     private Predicate minJlptPredicate(CriteriaBuilder criteriaBuilder, Path<String> field, String searchField) {
         return ofNullable(searchField)
-                .map(sf -> criteriaBuilder.greaterThanOrEqualTo(
-                        criteriaBuilder.lower(field),
-                        searchField.toLowerCase()
-                ))
-                .orElse(null);
+            .map(sf -> criteriaBuilder.greaterThanOrEqualTo(
+                criteriaBuilder.lower(field),
+                searchField.toLowerCase()
+            ))
+            .orElse(null);
     }
 
     private Predicate maxJlptPredicate(CriteriaBuilder criteriaBuilder, Path<String> field, String searchField) {
         return ofNullable(searchField)
-                .map(sf -> criteriaBuilder.lessThanOrEqualTo(
-                        criteriaBuilder.lower(field),
-                        searchField.toLowerCase()
-                ))
-                .orElse(null);
+            .map(sf -> criteriaBuilder.lessThanOrEqualTo(
+                criteriaBuilder.lower(field),
+                searchField.toLowerCase()
+            ))
+            .orElse(null);
     }
 }
