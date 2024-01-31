@@ -405,7 +405,7 @@ public class KanjiControllerTests {
             .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
-    static Stream<Arguments> generateInvalidPayload() {
+    static Stream<Arguments> generateInvalidCreatePayload() {
         return Stream.of(
             Arguments.of(KanjiDto.builder().build()),
             Arguments.of(KanjiDto.builder().kanji("aaa").build()),
@@ -418,7 +418,7 @@ public class KanjiControllerTests {
     }
 
     @ParameterizedTest
-    @MethodSource("generateInvalidPayload")
+    @MethodSource("generateInvalidCreatePayload")
     public void GivenAuthenticatedUser_InvalidPayload_WhenCreateKanji_ReturnBadRequest(KanjiDto invalidPayload) throws URISyntaxException {
         given().header("Authorization", getKeycloakBearerToken())
             .when()
@@ -436,10 +436,76 @@ public class KanjiControllerTests {
         invalidPayload.put("#field3", "value3");
 
         given().header("Authorization", getKeycloakBearerToken())
-                .when()
-                .contentType("application/json")
-                .body(invalidPayload.toString())
-                .post(KANJI_ENDPOINT)
-                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+            .when()
+            .contentType("application/json")
+            .body(invalidPayload.toString())
+            .post(KANJI_ENDPOINT)
+            .then().statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    static Stream<Arguments> generateInvalidUpdatePayload() {
+        return Stream.of(
+            Arguments.of("0", KanjiDto.builder().build()),
+            Arguments.of("-1", KanjiDto.builder().build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").kunyomi("aaa").build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").kunyomiRomaji("あああ").build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").onyomi("aaa").build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").onyomiRomaji("あああ").build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").jlptLevel("aaa").build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").jlptLevel("aaa").build())
+        );
+    }
+    
+    @ParameterizedTest
+    @MethodSource("generateInvalidUpdatePayload")
+    public void GivenAuthenticatedUser_InvalidPayload_WhenUpdateKanji_ReturnBadRequest(String id, KanjiDto invalidPayload) throws URISyntaxException {
+        kanjiRepository.save(TEST_KANJI);
+        if (Objects.equals(id, "1")) {
+            updateKanjiId();
+            id = kanjiId.toString();
+        }
+
+        given().header("Authorization", getKeycloakBearerToken())
+            .when()
+            .contentType("application/json")
+            .body(invalidPayload)
+            .put(KANJI_ENDPOINT + "/" + id)
+            .then().statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    public void GivenAuthenticatedUser_InvalidPayloadType_WhenUpdateKanji_ReturnForbidden() throws URISyntaxException, JSONException {
+        kanjiRepository.save(TEST_KANJI);
+        updateKanjiId();
+
+        JSONObject invalidPayload = new JSONObject();
+        invalidPayload.put("?field1", "value1");
+        invalidPayload.put("!field2", "value2");
+        invalidPayload.put("#field3", "value3");
+
+        given().header("Authorization", getKeycloakBearerToken())
+            .when()
+            .contentType("application/json")
+            .body(invalidPayload.toString())
+            .put(KANJI_ENDPOINT)
+            .then().statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"-1", "0", "aaa"})
+    public void GivenAuthenticatedUser_InvalidId_WhenDeleteKanji_ReturnBadRequest(String id) throws URISyntaxException {
+        given().header("Authorization", getKeycloakBearerToken())
+            .when()
+            .contentType("application/json")
+            .put(KANJI_ENDPOINT + "/" + id)
+            .then()
+            .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    public void GivenStoppedDatabase_WhenGetKanji_ReturnInternalServerError() {
+        postgres.stop();
+        when().get(KANJI_ENDPOINT)
+            .then().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 }
