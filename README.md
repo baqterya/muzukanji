@@ -57,8 +57,6 @@ newspaper frequency if applicable.
   </ol>
 </details>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Built With
 
 * [![Java][Java-badge]][Java-url]
@@ -76,31 +74,28 @@ newspaper frequency if applicable.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+<strong> !The API is not yet hosted! </strong>
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
 
-### Installation
+* [Java 17 or higher](https://www.oracle.com/java/technologies/downloads/)
+* [Docker](https://www.docker.com/)
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
+### Local Setup
+
+1. Navigate to the root directory.
+2. Run maven clean package:
+    ```sh
+    mvn clean package
    ```
-3. Install NPM packages
+3. Run the docker-compose.yaml
    ```sh
-   npm install
+   docker compose up
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+4. If all images in the container are running you'll be able to access the API at the port 5555
+   ```sh
+   curl http://localhost:5555/api/v1/kanji
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
