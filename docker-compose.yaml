@@ -39,6 +39,11 @@ services:
       - 'kanji-data:/var/lib/keycloak'
     depends_on:
       - 'postgres'
+  muzukanji:
+    build: .
+    image: 'muzukanji:latest'
+    ports:
+      - '5555:5555'
 volumes:
   kanji-data:
     driver: 'local'
