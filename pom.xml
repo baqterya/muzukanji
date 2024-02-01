@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.baqterya</groupId>
 	<artifactId>muzukanji</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-RELEASE</version>
 	<name>muzukanji</name>
 	<description>Spring Boot Kanji API</description>
 	<properties>
@@ -139,6 +139,14 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.baqterya.muzukanji.MuzukanjiApplication</mainClass>
+					<layout>JAR</layout>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
