@@ -13106,7 +13106,7 @@ INSERT INTO "kanji_table" ("kanji","meanings","kunyomi","kunyomi_romaji","onyomi
 INSERT INTO "kanji_table" ("kanji","meanings","kunyomi","kunyomi_romaji","onyomi","onyomi_romaji","strokes","jlpt_level","jyoyo_grade_taught","most_used_in_newspapers") VALUES ('難', '', 'かたい, むずかしい', 'katai, muzukashii', 'ナン', 'nan', 19, NULL, 10, NULL);
 INSERT INTO "kanji_table" ("kanji","meanings","kunyomi","kunyomi_romaji","onyomi","onyomi_romaji","strokes","jlpt_level","jyoyo_grade_taught","most_used_in_newspapers") VALUES ('響', '', 'ひびく', 'hibiku', 'キョウ', 'kyou', 22, NULL, 10, NULL);
 INSERT INTO "kanji_table" ("kanji","meanings","kunyomi","kunyomi_romaji","onyomi","onyomi_romaji","strokes","jlpt_level","jyoyo_grade_taught","most_used_in_newspapers") VALUES ('頻', '', '', '', 'ヒン', 'hin', 16, NULL, NULL, NULL);
-SELECT MAX(id) FROM your_table;
+
 BEGIN;
 LOCK TABLE kanji_table IN EXCLUSIVE MODE;
 SELECT setval('kanji_sequence', COALESCE((SELECT MAX(id)+1 FROM kanji_table), 1), false);
