@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5050/muzukanji
+    url: jdbc:postgresql://host.docker.internal:5050/muzukanji
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
@@ -17,7 +17,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-url: http://localhost:5252/realms/muzukanji
+          issuer-url: http://host.docker.internal:5252/realms/muzukanji
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-url}/protocol/openid-connect/certs
 server:
   port: 5555
