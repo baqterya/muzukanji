@@ -30,14 +30,16 @@
 
 
 
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
+[![MIT License][license-shield]][license-url]
+<br/>
 A Spring Boot API that stores 13108 Kanji characters. The records contain each kanji's meanings,
 possible readings in both kana and romaji, the number of strokes, JLPT level, Jyoyo Grade and
-newspaper frequency if applicable.
+newspaper frequency if applicable. It uses PostgreSQL as a database and Keycloak to secure the protected endpoints.
 <br />
-<a href=""><strong>Explore the docs »</strong></a>
+<a href="" placeholder="Work in progress"><strong>Explore the docs »</strong></a>
 
 <br />
 <!-- TABLE OF CONTENTS -->
@@ -51,7 +53,13 @@ newspaper frequency if applicable.
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#prerequisites">Open endpoints</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+   </li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -105,9 +113,109 @@ newspaper frequency if applicable.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+### OPEN ENDPOINTS
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+1. Paginated list of all kanji
+   ```sh
+   GET /api/v1/kanji
+   ```
+   The returned JSON contains a ``pagination`` header containing the metadata and links to
+   other pages.
+   The ``data`` segment contains the list of all kanji containing the kanji itself, it's english meanings
+   and a link to its details. It can be filtered with  following optional **Request Params**:
+
+   | Param         |  Type   |                  Constraints                  |
+   |:--------------|:-------:|:---------------------------------------------:|
+   | kanji         | string  |          Must be japanese characters          |
+   | meaning       | string  |                No constraints                 |
+   | kunyomi       | string  |          Must be japanese characters          |
+   | kunyomiRomaji | string  |           Must be roman characters            |
+   | onyomi        | string  |          Must be japanese characters          |
+   | onyomiRomaji  | string  |           Must be roman characters            |
+   | minStrokes    | integer |               Between 1 and 34                |
+   | maxStrokes    | integer |               Between 1 and 34                |
+   | minJlptLevel  | string  | One of: N1, N2, N3, N4, N5 (can be lowercase) |
+   | maxJlptLevel  | string  | One of: N1, N2, N3, N4, N5 (can be lowercase) |
+   | minJyoyoGrade | integer |               Between 1 and 10                |
+   | maxJyoyoGrade | integer |               Between 1 and 10                |
+   | minUsage      | integer |              Between 1 and 2051               |
+   | maxUsage      | integer |              Between 1 and 2051               |
+
+2. Kanji details, accessed by ID
+   ```sh
+   GET /api/v1/kanji/1
+   ```
+   It will return the output JSON like:
+   ```json
+   {
+      "id": 1,
+      "kanji": "一",
+      "meanings": "One, One Radical (no.1)",
+      "kunyomi": "ひと-, ひと.つ",
+      "kunyomiRomaji": "hito-, hito.tsu",
+      "onyomi": "イチ, イツ",
+      "onyomiRomaji": "ichi, itsu",
+      "strokes": 1,
+      "jlptLevel": "N5",
+      "jyoyoGradeTaught": 1,
+      "mostUsedInNewspapers": 2
+   }  
+   ```
+   
+### PROTECTED ENDPOINTS
+
+   To access the protected endpoints you need a bearer token issued from the Keycloak API.
+   These endpoints are meant to be used to maintain the database and not be accessible to the
+   client user. 
+
+1. Create Kanji
+   ```sh
+   POST /api/v1/kanji
+   ```
+   Body must contain a properly formatted JSON with the Kanji's data. ID assignment is handled by
+   the database. The Kanji field cannot be null.
+   ```json
+   {
+      "kanji": "一",
+      "meanings": "One, One Radical (no.1)",
+      "kunyomi": "ひと-, ひと.つ",
+      "kunyomiRomaji": "hito-, hito.tsu",
+      "onyomi": "イチ, イツ",
+      "onyomiRomaji": "ichi, itsu",
+      "strokes": 1,
+      "jlptLevel": "N5",
+      "jyoyoGradeTaught": 1,
+      "mostUsedInNewspapers": 2
+   }  
+   ```
+2. Update Kanji
+   ```sh
+   PUT /api/v1/kanji/1
+   ```
+   It updates the kanji under the chosen ID with the data included in the JSON in the request body.
+   The ID must be an integer not smaller than 1. There must exist a kanji under this ID.
+   ```json
+   {
+      "kanji": "一",
+      "meanings": "One, One Radical (no.1)",
+      "kunyomi": "ひと-, ひと.つ",
+      "kunyomiRomaji": "hito-, hito.tsu",
+      "onyomi": "イチ, イツ",
+      "onyomiRomaji": "ichi, itsu",
+      "strokes": 1,
+      "jlptLevel": "N5",
+      "jyoyoGradeTaught": 1,
+      "mostUsedInNewspapers": 2
+   } 
+   ```
+3. Delete Kanji
+   ```sh
+   DELETE /api/v1/kanji/1
+   ```
+   It removes the Kanji under chosen ID from the database.
+   
+
+[//]: # (_For more examples, please refer to the [Documentation]&#40;https://example.com&#41;_)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -139,7 +247,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [stars-url]: https://github.com/baqterya/muzukanji/stargazers
 [issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
 [issues-url]: https://github.com/baqterya/muzukanji/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg
 [license-url]: https://github.com/baqterya/muzukanji/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
