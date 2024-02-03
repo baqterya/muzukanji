@@ -87,21 +87,16 @@ newspaper frequency if applicable. It uses PostgreSQL as a database and Keycloak
 ### Prerequisites
 
 
-* [Java 17 or higher](https://www.oracle.com/java/technologies/downloads/)
 * [Docker](https://www.docker.com/)
 
 ### Local Setup
 
 1. Navigate to the root directory.
-2. Run maven clean package:
-    ```sh
-    mvn clean package
-   ```
-3. Run the docker-compose.yaml
+2. Run the docker-compose.yaml
    ```sh
    docker compose up
    ```
-4. If all images in the container are running you'll be able to access the API at the port 5555
+3. If all images in the container are running you'll be able to access the API at the port 5555
    ```sh
    curl http://localhost:5555/api/v1/kanji
    ```
