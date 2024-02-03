@@ -1,48 +1,48 @@
 version: "3.8"
 services:
   postgres:
-    image: 'postgres:alpine'
+    image: postgres:alpine
     ports:
-      - '5050:5432'
+      - "5050:5432"
     volumes:
-      - 'kanji-data:/var/lib/muzukanji-db'
+      - kanji-data:/var/lib/muzukanji-db
     environment:
-      - 'POSTGRES_DB=muzukanji'
-      - 'POSTGRES_USER=postgres'
-      - 'POSTGRES_PASSWORD=password'
-      - 'ENCODING=UTF8'
-      - 'LANG=ja_JP.UTF-8'
+      POSTGRES_DB: muzukanji
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      ENCODING: UTF8
+      LANG: a_JP.UTF-8
   pgadmin:
-    image: 'dpage/pgadmin4'
+    image: dpage/pgadmin4
     ports:
-      - '5151:80'
+      - "5151:80"
     environment:
-      - 'PGADMIN_DEFAULT_EMAIL=admin@muzukanji.com'
-      - 'PGADMIN_DEFAULT_PASSWORD=postgres'
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
     volumes:
-      - 'kanji-data:/var/lib/pgadmin'
+      - kanji-data:/var/lib/pgadmin
     depends_on:
-      - 'postgres'
+      - postgres
   keycloak:
-    command: 'start-dev'
-    image: 'quay.io/keycloak/keycloak:23.0.0'
+    command: start-dev
+    image: quay.io/keycloak/keycloak:23.0.0
     ports:
-      - '5252:8080'
+      - "5252:8080"
     environment:
-      - 'DB_VENDOR=POSTGRES'
-      - 'DB_DATABASE=muzukanji'
-      - 'DB_USER=postgres'
-      - 'DB_PASSWORD=password'
-      - 'KEYCLOAK_ADMIN=admin'
-      - 'KEYCLOAK_ADMIN_PASSWORD=password'
+      DB_VENDOR: POSTGRES
+      DB_DATABASE: muzukanji
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASS}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASS}
     volumes:
-      - 'kanji-data:/var/lib/keycloak'
+      - kanji-data:/var/lib/keycloak
     depends_on:
-      - 'postgres'
+      - postgres
   muzukanji:
-    image: 'baqterya/muzukanji:latest'
+    image: baqterya/muzukanji:latest
     ports:
-      - '5555:5555'
+      - "5555:5555"
 volumes:
   kanji-data:
-    driver: 'local'
+    driver: local
