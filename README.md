@@ -92,11 +92,20 @@ newspaper frequency if applicable. It uses PostgreSQL as a database and Keycloak
 ### Local Setup
 
 1. Navigate to the root directory.
-2. Run the docker-compose.yaml
+2. Create a ``.env`` file that will store all the sensitive data:
+   ```sh
+   echo POSTGRES_USER={database username} > .env
+   echo POSTGRES_PASS={database password} > .env
+   echo KEYCLOAK_USER={keycloak username} > .env
+   echo KEYCLOAK_PASS={keycloak password} > .env
+   echo PGADMIN_EMAIL={pgadmin username} > .env
+   echo PGADMIN_PASS={pgadmin password} > .env
+   ```
+3. Run the docker-compose.yaml
    ```sh
    docker compose up
    ```
-3. If all images in the container are running you'll be able to access the API at the port 5555
+4. If all images in the container are running you'll be able to access the API at the port 5555
    ```sh
    curl http://localhost:5555/api/v1/kanji
    ```
