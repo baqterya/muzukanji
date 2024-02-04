@@ -39,7 +39,7 @@ A Spring Boot API that stores 13108 Kanji characters. The records contain each k
 possible readings in both kana and romaji, the number of strokes, JLPT level, Jyoyo Grade and
 newspaper frequency if applicable. It uses PostgreSQL as a database and Keycloak to secure the protected endpoints.
 <br />
-<a href="" placeholder="Work in progress"><strong>Explore the docs »</strong></a>
+<a href="#usage" placeholder="Work in progress"><strong>Explore the docs »</strong></a>
 
 <br />
 <!-- TABLE OF CONTENTS -->
@@ -92,14 +92,14 @@ newspaper frequency if applicable. It uses PostgreSQL as a database and Keycloak
 ### Local Setup
 
 1. Navigate to the root directory.
-2. Create a ``.env`` file that will store all the sensitive data:
+2. Create a ``.env`` file that will store all the sensitive data (replace the fields marked ith * with the corresponding data):
    ```sh
-   echo POSTGRES_USER={database username} > .env
-   echo POSTGRES_PASS={database password} > .env
-   echo KEYCLOAK_USER={keycloak username} > .env
-   echo KEYCLOAK_PASS={keycloak password} > .env
-   echo PGADMIN_EMAIL={pgadmin username} > .env
-   echo PGADMIN_PASS={pgadmin password} > .env
+   echo POSTGRES_USER=*database username* > .env
+   echo POSTGRES_PASS=*database password* > .env
+   echo KEYCLOAK_USER=*keycloak username* > .env
+   echo KEYCLOAK_PASS=*keycloak password* > .env
+   echo PGADMIN_EMAIL=*pgadmin username* > .env
+   echo PGADMIN_PASS=*pgadmin password* > .env
    ```
 3. Run the docker-compose.yaml
    ```sh
