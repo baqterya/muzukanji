@@ -50,14 +50,14 @@ newspaper frequency if applicable. It uses PostgreSQL as a database and Keycloak
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#local%20setup">Local Setup</a></li>
+        <li><a href="#local-setup">Local Setup</a></li>
       </ul>
     </li>
     <li>
       <a href="#usage">Usage</a>
       <ul>
-        <li><a href="#open%20endpoints">Open Endpoints</a></li>
-        <li><a href="#protected%20endpoints">Protected Endpoints</a></li>
+        <li><a href="#open-endpoints">Open Endpoints</a></li>
+        <li><a href="#protected-endpoints">Protected Endpoints</a></li>
       </ul>
    </li>
     <li><a href="#license">License</a></li>
