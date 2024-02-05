@@ -103,7 +103,7 @@ To set up the API locally you will have to set up the security.
    ```
 5. Build the docker image:
    ```sh
-   docker build -t name:tag . 
+   docker build --build-arg postgres_user=*database username* --build-arg postgres_pass=*database password* -t name:tag . 
    ```
 6. In the docker-compose.yaml change the image name of `muzukanji` service to whatever was chosen in the previous step.
 7. Run the docker-compose.yaml
