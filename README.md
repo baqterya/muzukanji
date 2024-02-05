@@ -8,17 +8,6 @@
 *** Thanks again! Now go create something AMAZING! :D
 -->
 
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -33,7 +22,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-[![MIT License][license-shield]][license-url] [![Actions CI](https://github.com/baqterya/muzukanji/actions/workflows/ci.yml/badge.svg)](https://github.com/baqterya/muzukanji/actions/workflows/ci.yml)
+[![MIT License][license-shield]][license-url] &emsp; [![Actions CI](https://github.com/baqterya/muzukanji/actions/workflows/ci.yml/badge.svg)](https://github.com/baqterya/muzukanji/actions/workflows/ci.yml) &emsp; ![Coverage](.github/badges/jacoco.svg)
 <br/>
 A Spring Boot API that stores 13108 Kanji characters. The records contain each kanji's meanings,
 possible readings in both kana and romaji, the number of strokes, JLPT level, Jyoyo Grade and
