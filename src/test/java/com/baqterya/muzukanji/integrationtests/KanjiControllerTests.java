@@ -413,7 +413,13 @@ public class KanjiControllerTests {
             Arguments.of(KanjiDto.builder().kanji("力").kunyomiRomaji("あああ").build()),
             Arguments.of(KanjiDto.builder().kanji("力").onyomi("aaa").build()),
             Arguments.of(KanjiDto.builder().kanji("力").onyomiRomaji("あああ").build()),
-            Arguments.of(KanjiDto.builder().kanji("力").jlptLevel("aaa").build())
+            Arguments.of(KanjiDto.builder().kanji("力").jlptLevel("aaa").build()),
+            Arguments.of(KanjiDto.builder().kanji("力").strokes(0).build()),
+            Arguments.of(KanjiDto.builder().kanji("力").strokes(35).build()),
+            Arguments.of(KanjiDto.builder().kanji("力").jyoyoGradeTaught(0).build()),
+            Arguments.of(KanjiDto.builder().kanji("力").jyoyoGradeTaught(11).build()),
+            Arguments.of(KanjiDto.builder().kanji("力").mostUsedInNewspapers(0).build()),
+            Arguments.of(KanjiDto.builder().kanji("力").mostUsedInNewspapers(2502).build())
         );
     }
 
@@ -452,7 +458,13 @@ public class KanjiControllerTests {
             Arguments.of("1", KanjiDto.builder().kanji("力").onyomi("aaa").build()),
             Arguments.of("1", KanjiDto.builder().kanji("力").onyomiRomaji("あああ").build()),
             Arguments.of("1", KanjiDto.builder().kanji("力").jlptLevel("aaa").build()),
-            Arguments.of("1", KanjiDto.builder().kanji("力").jlptLevel("aaa").build())
+            Arguments.of("1", KanjiDto.builder().kanji("力").jlptLevel("aaa").build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").strokes(0).build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").strokes(35).build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").jyoyoGradeTaught(0).build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").jyoyoGradeTaught(11).build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").mostUsedInNewspapers(0).build()),
+            Arguments.of("1", KanjiDto.builder().kanji("力").mostUsedInNewspapers(2502).build())
         );
     }
     
