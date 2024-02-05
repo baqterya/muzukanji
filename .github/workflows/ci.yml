@@ -39,6 +39,7 @@ jobs:
       with:
         name: muzukanji-1.0-RELEASE.jar
         path: target
+        retention-days: 1
 
     - name: Generate JaCoCo Badge
       uses: cicirello/jacoco-badge-generator@v2.11.0
@@ -64,6 +65,7 @@ jobs:
   
   push_to_registry:
     name: Push Docker Image to Docker Hub
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
