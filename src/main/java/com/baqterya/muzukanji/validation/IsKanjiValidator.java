@@ -21,12 +21,24 @@ public class IsKanjiValidator implements ConstraintValidator<IsKanji, KanjiDto> 
     public boolean isValid(KanjiDto value, ConstraintValidatorContext context) {
         if (value == null) return false;
         boolean validator = true;
-        if (value.getKanji() != null) validator = isJapanese(value.getKanji());
-        if (value.getKunyomi() != null) validator = isJapanese(value.getKunyomi());
-        if (value.getKunyomiRomaji() != null) validator = isRomaji(value.getKunyomiRomaji());
-        if (value.getOnyomi() != null) validator = isJapanese(value.getOnyomi());
-        if (value.getOnyomiRomaji() != null) validator = isRomaji(value.getOnyomiRomaji());
-        if (value.getJlptLevel() != null) validator = validateJlpt(value.getJlptLevel());
+        if (value.getKanji() != null)
+            validator = isJapanese(value.getKanji());
+        if (value.getKunyomi() != null)
+            validator = isJapanese(value.getKunyomi());
+        if (value.getKunyomiRomaji() != null)
+            validator = isRomaji(value.getKunyomiRomaji());
+        if (value.getOnyomi() != null)
+            validator = isJapanese(value.getOnyomi());
+        if (value.getOnyomiRomaji() != null)
+            validator = isRomaji(value.getOnyomiRomaji());
+        if (value.getJlptLevel() != null)
+            validator = validateJlpt(value.getJlptLevel());
+        if (value.getStrokes() != null)
+            validator = (value.getStrokes() > 1 && value.getStrokes() <= 34);
+        if (value.getJyoyoGradeTaught() != null)
+            validator = (value.getJyoyoGradeTaught() > 1 && value.getJyoyoGradeTaught() <= 10);
+        if (value.getMostUsedInNewspapers() != null)
+            validator = (value.getMostUsedInNewspapers() > 1 && value.getMostUsedInNewspapers() <= 2501);
         return validator;
     }
 
