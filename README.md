@@ -77,7 +77,7 @@ newspaper frequency if applicable. It uses PostgreSQL as a database and Keycloak
 ### Prerequisites
 
 * [Docker][Docker-url]
-* [Java][Java-url]
+* [Java][Java-url] (min 17)
 
 
 ### Local Setup
