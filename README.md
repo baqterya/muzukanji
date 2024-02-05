@@ -84,31 +84,49 @@ newspaper frequency if applicable. It uses PostgreSQL as a database and Keycloak
 
 <strong> !The API is not yet hosted! </strong>
 
+
 ### Prerequisites
 
+* [Docker][Docker-url]
+* [Java][Java-url]
 
-* [Docker](https://www.docker.com/)
 
 ### Local Setup
 
-1. Navigate to the root directory.
-2. Create a ``.env`` file that will store all the sensitive data (replace the fields marked ith * with the corresponding data):
+The dockerhub image is meant for the application deployment, so it contains escaped secure data. <br/>
+To set up the API locally you will have to set up the security.
+
+
+1. Navigate to the root directory.   
+2. Create a `.env` file that will store all the sensitive data (replace the fields marked with * with the corresponding data):
    ```sh
-   echo POSTGRES_USER=*database username* > .env
-   echo POSTGRES_PASS=*database password* > .env
-   echo KEYCLOAK_USER=*keycloak username* > .env
-   echo KEYCLOAK_PASS=*keycloak password* > .env
-   echo PGADMIN_EMAIL=*pgadmin username* > .env
-   echo PGADMIN_PASS=*pgadmin password* > .env
+   POSTGRES_USER=*database username*
+   POSTGRES_PASS=*database password*
+   KEYCLOAK_USER=*keycloak username*
+   KEYCLOAK_PASS=*keycloak password*
+   PGADMIN_EMAIL=*pgadmin username*
+   PGADMIN_PASS=*pgadmin password*
    ```
-3. Run the docker-compose.yaml
+3. In the Dockerfile replace ENV with corresponding data.
+4. Package the .jar with maven:
+   ```sh
+   mvn clean package
+   ```
+5. Build the docker image:
+   ```sh
+   docker build -t name:tag . 
+   ```
+6. In the docker-compose.yaml change the image name of `muzukanji` service to whatever was chosen in the previous step.
+7. Run the docker-compose.yaml
    ```sh
    docker compose up
    ```
-4. If all images in the container are running you'll be able to access the API at the port 5555
+8. If all images in the container are running you'll be able to access the API at the port 5555
    ```sh
    curl http://localhost:5555/api/v1/kanji
    ```
+9. To access the secure endpoints you need to set up the keycloak realm at `http://localhost:5252`. You can use
+   the testing file found under `src/main/resources/keycloak/muzukanji-realm.json`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -123,9 +141,9 @@ newspaper frequency if applicable. It uses PostgreSQL as a database and Keycloak
    ```sh
    GET /api/v1/kanji
    ```
-   The returned JSON contains a ``pagination`` header containing the metadata and links to
+   The returned JSON contains a `pagination` header containing the metadata and links to
    other pages.
-   The ``data`` segment contains the list of all kanji containing the kanji itself, it's english meanings
+   The `data` segment contains the list of all kanji containing the kanji itself, it's english meanings
    and a link to its details. It can be filtered with  following optional **Request Params**:
 
    | Param         |  Type   |                  Constraints                  |
