@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-
+    name: Test and Build
     runs-on: ubuntu-latest
 
     steps:
@@ -55,6 +55,8 @@ jobs:
     name: Push Docker Image to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml -DskipTests
       - name: Check out the repo
         uses: actions/checkout@v4
 
