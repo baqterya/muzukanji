@@ -27,20 +27,31 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
     - name: Run tests
       run: mvn -B test
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml -DskipTests
+
+    - name: Upload the artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: muzukanji-1.0-RELEASE.jar
+        path: target
+
     - name: Generate JaCoCo Badge
       uses: cicirello/jacoco-badge-generator@v2.11.0
       with:
         jacoco-csv-file: target/site/jacoco/jacoco.csv
         generate-branches-badge: true
         on-missing-report: fail
+
     - name: Log coverage percentage
       run: |
         echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
         echo "branch coverage = ${{ steps.jacoco.outputs.branches }}"
+
     - name: Commit the badge (if it changed)
       run: |
         if [[ `git status --porcelain` ]]; then
@@ -55,10 +66,14 @@ jobs:
     name: Push Docker Image to Docker Hub
     runs-on: ubuntu-latest
     steps:
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml -DskipTests
       - name: Check out the repo
         uses: actions/checkout@v4
+
+      - name: Download the artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: muzukanji-1.0-RELEASE.jar
+          path: target
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
