@@ -43,6 +43,8 @@ services:
     image: baqterya/muzukanji:latest
     ports:
       - "5555:5555"
+    depends_on:
+      - postgres
 volumes:
   kanji-data:
     driver: local
