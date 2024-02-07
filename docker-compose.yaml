@@ -12,17 +12,17 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASS}
       ENCODING: UTF8
       LANG: a_JP.UTF-8
-  pgadmin:
-    image: dpage/pgadmin4
-    ports:
-      - "5151:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
-    volumes:
-      - kanji-data:/var/lib/pgadmin
-    depends_on:
-      - postgres
+#  pgadmin:
+#    image: dpage/pgadmin4
+#    ports:
+#      - "5151:80"
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
+#    volumes:
+#      - kanji-data:/var/lib/pgadmin
+#    depends_on:
+#      - postgres
   keycloak:
     command: start-dev
     image: quay.io/keycloak/keycloak:23.0.0
