@@ -87,7 +87,7 @@ The API is deployed on AWS.
 * [Docker][Docker-url]
 * [Java][Java-url] (min 17)
 
-The dockerhub image is meant for the application deployment, so it contains escaped secure data. <br/>
+The Docker Hub image is meant for the application deployment, so it contains escaped secure data. <br/>
 To set up the API locally you will have to set up the security and rebuild the image.
 
 
