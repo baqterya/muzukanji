@@ -24,6 +24,7 @@
 ## About The Project
 [![MIT License][license-shield]][license-url] &emsp; [![Actions CI](https://github.com/baqterya/muzukanji/actions/workflows/ci.yml/badge.svg)](https://github.com/baqterya/muzukanji/actions/workflows/ci.yml) &emsp; ![Coverage](.github/badges/jacoco.svg)
 <br/>
+<h2>THE API IS NOT DEPLOYED RIGHT NOW. IT WILL RESTART SOON™</h2>
 A Spring Boot API that stores 13108 Kanji characters. The records contain each kanji's meanings,
 possible readings in both kana and romaji, the number of strokes, JLPT level, Jyoyo Grade and
 newspaper frequency if applicable. It uses PostgreSQL as a database and Keycloak to secure the protected endpoints.
